@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "120065917182",
+    "project_id": "min-rescue",
+    "storage_bucket": "min-rescue.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120065917182:android:57b351d933deb0c632a5af",
+        "android_client_info": {
+          "package_name": "com.tenminrescue.ten_min_res"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmDYyhvCc03CXVi8gwQarZJgpbHIx5tKA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

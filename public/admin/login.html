@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Admin Login — 10MinRescue</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23FF3B3B'/%3E%3Cpath d='M50 25v50M25 50h50' stroke='white' stroke-width='10' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      background:#0B1D3A;min-height:100vh;
+      display:flex;align-items:center;justify-content:center;
+      padding:24px;color:#fff;
+    }
+    .panel{
+      background:#152644;border:1px solid #1e3a5f;
+      border-radius:24px;padding:44px 36px;width:100%;max-width:420px;
+      box-shadow:0 30px 80px rgba(0,0,0,0.4);
+    }
+    .brand{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:8px}
+    .brand-mark{
+      width:42px;height:42px;border-radius:11px;
+      background:#FF3B3B;display:flex;align-items:center;justify-content:center;
+      box-shadow:0 6px 16px rgba(255,59,59,0.4);
+    }
+    .brand-mark svg{width:22px;height:22px;color:#fff}
+    .brand-name{font-weight:900;font-size:18px}
+    .brand-name span{color:#FF3B3B}
+    h1{font-size:22px;font-weight:800;text-align:center;margin-bottom:6px;margin-top:18px}
+    .sub{color:#94a3b8;font-size:14px;text-align:center;margin-bottom:28px}
+    label{display:block;font-size:13px;font-weight:600;color:#cbd5e1;margin-bottom:6px;margin-top:14px}
+    input{
+      width:100%;background:#0B1D3A;border:1px solid #1e3a5f;
+      border-radius:11px;padding:13px 14px;color:#fff;font-size:15px;
+      outline:none;transition:border .15s;
+    }
+    input:focus{border-color:#FF3B3B}
+    button{
+      width:100%;margin-top:24px;background:#FF3B3B;color:#fff;
+      border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;
+      cursor:pointer;transition:background .15s, transform .1s;
+    }
+    button:hover{background:#E11D2E}
+    button:active{transform:scale(0.99)}
+    button:disabled{opacity:0.6;cursor:not-allowed}
+    .err{
+      background:rgba(255,59,59,0.1);border:1px solid rgba(255,59,59,0.3);
+      color:#fca5a5;padding:12px;border-radius:10px;font-size:13px;
+      margin-top:14px;display:none;
+    }
+    .err.show{display:block}
+    .back{text-align:center;margin-top:18px;font-size:13px}
+    .back a{color:#94a3b8;text-decoration:none}
+    .back a:hover{color:#fff}
+    .badge{
+      display:inline-flex;align-items:center;gap:6px;
+      background:rgba(255,59,59,0.1);border:1px solid rgba(255,59,59,0.25);
+      color:#fca5a5;padding:5px 12px;border-radius:999px;
+      font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+      margin-bottom:8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <div class="brand">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/></svg></span>
+      <span class="brand-name">10Min<span>Rescue</span></span>
+    </div>
+    <div style="text-align:center;margin-top:14px"><span class="badge">Admin Access</span></div>
+    <h1>Owner Login</h1>
+    <p class="sub">Sign in to manage drivers, hospitals & SOS requests</p>
+
+    <form id="form">
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="email" required placeholder="admin@10minrescue.com" />
+      <label for="pw">Password</label>
+      <input id="pw" type="password" autocomplete="current-password" required placeholder="••••••••" />
+      <button type="submit" id="btn">Sign In</button>
+      <div class="err" id="err"></div>
+    </form>
+
+    <div class="back"><a href="/">← Back to website</a></div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+    import {
+      getAuth, signInWithEmailAndPassword, onAuthStateChanged,
+      setPersistence, browserSessionPersistence
+    } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc }
+      from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCmDYyhvCc03CXVi8gwQarZJgpbHIx5tKA",
+      authDomain: "min-rescue.firebaseapp.com",
+      projectId: "min-rescue",
+      storageBucket: "min-rescue.firebasestorage.app"
+    };
+
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db   = getFirestore(app);
+
+    // Per-tab session: prevents the admin auth from leaking into a
+    // hospital tab (or vice versa) via Firebase's cross-tab broadcast.
+    // Each tab now has its own independent Firebase Auth session.
+    setPersistence(auth, browserSessionPersistence).catch((e) =>
+      console.warn("Could not set session persistence:", e));
+
+    const form = document.getElementById("form");
+    const btn  = document.getElementById("btn");
+    const err  = document.getElementById("err");
+
+    // If already logged in AND admin → redirect to dashboard.
+    // If signed in but NOT admin → sign out so login form is usable.
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) return;
+      try {
+        const adminDoc = await getDoc(doc(db, "admins", user.uid));
+        if (adminDoc.exists()) {
+          location.replace("/admin/dashboard.html");
+        } else {
+          await auth.signOut();
+        }
+      } catch (e) {
+        // If the read fails (e.g. permission denied), sign out and let user retry.
+        await auth.signOut();
+      }
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      err.classList.remove("show");
+      btn.disabled = true; btn.textContent = "Signing in…";
+
+      const email = document.getElementById("email").value.trim();
+      const pw    = document.getElementById("pw").value;
+
+      try {
+        const cred = await signInWithEmailAndPassword(auth, email, pw);
+        const adminDoc = await getDoc(doc(db, "admins", cred.user.uid));
+        if (!adminDoc.exists()) {
+          await auth.signOut();
+          throw new Error("This account is not authorized as an admin.");
+        }
+        location.replace("/admin/dashboard.html");
+      } catch (e) {
+        let msg = e.message || "Sign in failed";
+        if (msg.includes("invalid-credential") || msg.includes("wrong-password") || msg.includes("user-not-found"))
+          msg = "Invalid email or password.";
+        err.textContent = msg;
+        err.classList.add("show");
+        btn.disabled = false; btn.textContent = "Sign In";
+      }
+    });
+  </script>
+</body>
+</html>

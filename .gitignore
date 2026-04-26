@@ -1,0 +1,13 @@
+# Build artifacts (auto-generated; cannot be in git due to GitHub 100MB limit)
+build/
+.dart_tool/
+.firebase/
+
+# Local config (not source — IDE / OS specific)
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local Firebase auth tokens
+.firebaserc.local

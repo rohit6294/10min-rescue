@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Hospital Dashboard — 10MinRescue</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563EB'/%3E%3Cpath d='M50 25v50M25 50h50' stroke='white' stroke-width='10' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --navy:#0B1D3A;--card:#152644;--line:#1e3a5f;
+      --red:#FF3B3B;--green:#22C55E;--blue:#2563EB;--amber:#F59E0B;
+      --muted:#94a3b8;--dim:#64748b;
+    }
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      background:var(--navy);color:#fff;min-height:100vh;
+    }
+
+    /* ── Top Bar ─────────────────────────────── */
+    header{
+      background:#06122a;border-bottom:1px solid var(--line);
+      padding:14px 24px;display:flex;align-items:center;justify-content:space-between;
+      position:sticky;top:0;z-index:20;
+    }
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}
+    .brand-mark{
+      width:36px;height:36px;border-radius:10px;background:var(--blue);
+      display:flex;align-items:center;justify-content:center;
+    }
+    .brand-mark svg{width:18px;height:18px;color:#fff}
+    .brand-name{font-weight:900;font-size:16px}
+    .brand-name span{color:var(--red)}
+    .top-right{display:flex;align-items:center;gap:14px}
+    .hosp-name{font-size:14px;font-weight:600}
+    .hosp-name small{display:block;color:var(--muted);font-size:11px;font-weight:400}
+    .pill-status{
+      display:inline-flex;align-items:center;gap:6px;
+      background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);
+      color:#86efac;padding:6px 12px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;
+    }
+    .pill-status.off{background:rgba(100,116,139,0.15);border-color:rgba(100,116,139,0.3);color:#94a3b8}
+    .pill-status::before{
+      content:'';width:7px;height:7px;border-radius:50%;background:currentColor;
+    }
+    .logout-btn{
+      background:none;border:1px solid var(--line);color:#cbd5e1;
+      padding:8px 14px;border-radius:9px;font-size:13px;cursor:pointer;
+    }
+    .logout-btn:hover{border-color:var(--red);color:var(--red)}
+
+    main{padding:32px 24px;max-width:1280px;margin:0 auto}
+
+    .greet{margin-bottom:24px}
+    .greet h1{font-size:26px;font-weight:900;letter-spacing:-0.5px;margin-bottom:4px}
+    .greet p{color:var(--muted);font-size:14px}
+
+    /* ── Stats ─────────────────────────────── */
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+    .stat-card{
+      background:var(--card);border:1px solid var(--line);
+      border-radius:16px;padding:20px;
+    }
+    .stat-card h3{font-size:13px;color:var(--muted);font-weight:600;margin-bottom:8px}
+    .stat-card .num{font-size:30px;font-weight:900;letter-spacing:-1px}
+    .stat-card .num.red{color:var(--red)}
+    .stat-card .num.green{color:var(--green)}
+    .stat-card .num.amber{color:var(--amber)}
+    .stat-card .num.blue{color:#60a5fa}
+
+    /* ── Section ────────────────────────────── */
+    .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+    .section-head h2{font-size:18px;font-weight:800}
+
+    /* ── Incoming alert (live) ───────────────── */
+    .alert-card{
+      background:linear-gradient(135deg,rgba(255,59,59,0.18),rgba(255,59,59,0.05));
+      border:2px solid var(--red);
+      border-radius:18px;padding:24px;margin-bottom:18px;
+      animation:redPulse 1.4s ease-in-out infinite;
+    }
+    @keyframes redPulse{
+      0%,100%{box-shadow:0 0 0 0 rgba(255,59,59,0.5)}
+      50%{box-shadow:0 0 0 14px rgba(255,59,59,0)}
+    }
+    .alert-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+    .alert-head .label{
+      background:var(--red);color:#fff;
+      padding:5px 12px;border-radius:999px;
+      font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+    }
+    .alert-head h3{font-size:18px;font-weight:800}
+    .alert-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:18px}
+    .alert-info > div{background:rgba(0,0,0,0.25);border-radius:10px;padding:12px}
+    .alert-info label{display:block;color:var(--muted);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+    .alert-info .val{font-size:14px;font-weight:600}
+    .alert-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .btn-big{
+      flex:1;min-width:120px;padding:14px 18px;border-radius:12px;border:none;
+      font-size:14px;font-weight:700;cursor:pointer;
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    }
+    .btn-accept{background:var(--green);color:#fff}
+    .btn-accept:hover{background:#16A34A}
+    .btn-decline{background:rgba(255,255,255,0.08);color:#fff;border:1px solid var(--line)}
+    .btn-decline:hover{background:rgba(255,59,59,0.15);border-color:var(--red);color:var(--red)}
+    .btn-track{background:var(--blue);color:#fff}
+    .btn-track:hover{background:#1D4ED8}
+
+    /* ── Tables ────────────────────────────── */
+    .table-wrap{
+      background:var(--card);border:1px solid var(--line);
+      border-radius:16px;overflow:hidden;
+    }
+    table{width:100%;border-collapse:collapse}
+    th{
+      text-align:left;padding:14px 18px;
+      font-size:12px;font-weight:700;color:var(--muted);
+      text-transform:uppercase;letter-spacing:0.6px;
+      background:rgba(0,0,0,0.15);border-bottom:1px solid var(--line);
+    }
+    td{padding:16px 18px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:middle}
+    tr:last-child td{border-bottom:none}
+
+    .pill{display:inline-block;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
+    .pill-pending{background:rgba(245,158,11,0.15);color:#fbbf24}
+    .pill-active{background:rgba(34,197,94,0.15);color:#86efac}
+    .pill-completed{background:rgba(37,99,235,0.15);color:#93c5fd}
+
+    .empty{padding:60px 24px;text-align:center;color:var(--muted)}
+    .empty .icon{font-size:48px;margin-bottom:12px;opacity:0.5}
+    .empty h3{font-size:16px;color:#cbd5e1;margin-bottom:4px}
+
+    .toast{
+      position:fixed;bottom:24px;right:24px;z-index:200;
+      background:#16A34A;color:#fff;padding:14px 22px;border-radius:12px;
+      font-size:14px;font-weight:600;opacity:0;transform:translateY(10px);
+      transition:opacity .2s, transform .2s;box-shadow:0 16px 40px rgba(0,0,0,0.4);
+    }
+    .toast.show{opacity:1;transform:translateY(0)}
+    .toast.error{background:#DC2626}
+
+    /* Tablets ─────────────────────────────────── */
+    @media (max-width: 1100px){
+      .stats{grid-template-columns:repeat(2,1fr)}
+    }
+
+    /* Mobile ──────────────────────────────────── */
+    @media (max-width: 760px){
+      header{padding:12px 14px;flex-wrap:wrap;gap:10px}
+      .brand-name{font-size:14px}
+      .hosp-name{display:none}
+      .top-right{gap:8px;flex-wrap:wrap}
+      .pill-status{padding:6px 10px;font-size:11px}
+      .logout-btn{padding:7px 12px;font-size:12px}
+
+      main{padding:18px 14px}
+      .greet h1{font-size:22px}
+
+      .stats{grid-template-columns:repeat(2,1fr);gap:12px}
+      .stat-card{padding:16px}
+      .stat-card .num{font-size:24px}
+
+      .alert-card{padding:18px 16px}
+      .alert-head h3{font-size:16px}
+      .alert-info{grid-template-columns:1fr 1fr;gap:10px}
+      .alert-info > div{padding:10px}
+      .alert-actions{flex-direction:column}
+      .btn-big{width:100%;flex:none}
+
+      /* Tables → horizontal scroll */
+      .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+      table{min-width:560px;font-size:13px}
+      th, td{padding:11px 12px}
+
+      .toast{left:12px;right:12px;bottom:12px}
+    }
+
+    /* Small phones ─────────────────────────────── */
+    @media (max-width: 420px){
+      .stats{grid-template-columns:1fr}
+      .alert-info{grid-template-columns:1fr}
+      .stat-card .num{font-size:28px}
+      .greet h1{font-size:20px}
+    }
+
+    /* notification chime indicator */
+    audio{display:none}
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="/" class="brand">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1m4 0h1M9 13h1m4 0h1M9 17h1m4 0h1"/></svg></span>
+      <span class="brand-name">10Min<span>Rescue</span> · Hospital</span>
+    </a>
+    <div class="top-right">
+      <div class="hosp-name"><span id="hosp-name">—</span><small id="hosp-email">—</small></div>
+      <button class="pill-status" id="status-pill">Active</button>
+      <button class="logout-btn" id="logout">Logout</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="greet">
+      <h1>Welcome back</h1>
+      <p>Live incoming patient alerts and recent activity.</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat-card"><h3>Pending Alerts</h3><div class="num red" id="s-pending">0</div></div>
+      <div class="stat-card"><h3>Ambulances En-Route</h3><div class="num amber" id="s-enroute">0</div></div>
+      <div class="stat-card"><h3>Completed Today</h3><div class="num green" id="s-today">0</div></div>
+      <div class="stat-card"><h3>Total Patients</h3><div class="num blue" id="s-total">0</div></div>
+    </div>
+
+    <!-- Live alerts (full cards) -->
+    <div id="live-alerts"></div>
+
+    <!-- Active rides -->
+    <div class="section-head"><h2>Active Ambulances Heading Here</h2></div>
+    <div class="table-wrap" style="margin-bottom:28px">
+      <table>
+        <thead><tr><th>Patient</th><th>Emergency</th><th>Driver</th><th>Status</th><th>ETA</th><th>Actions</th></tr></thead>
+        <tbody id="active-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- History -->
+    <div class="section-head"><h2>Recent History</h2></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Time</th><th>Patient</th><th>Status</th><th>Driver</th></tr></thead>
+        <tbody id="hist-tbody"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+    import {
+      getAuth, onAuthStateChanged, signOut,
+      setPersistence, browserSessionPersistence
+    } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+    import {
+      getFirestore, doc, getDoc, updateDoc, collection,
+      onSnapshot, query, where, orderBy, limit, serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCmDYyhvCc03CXVi8gwQarZJgpbHIx5tKA",
+      authDomain: "min-rescue.firebaseapp.com",
+      projectId: "min-rescue",
+      storageBucket: "min-rescue.firebasestorage.app"
+    };
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db   = getFirestore(app);
+
+    // Per-tab session — keeps the hospital auth state isolated from
+    // any admin / driver portal open in another tab on the same project.
+    setPersistence(auth, browserSessionPersistence).catch((e) =>
+      console.warn("Could not set session persistence:", e));
+
+    const $ = (id) => document.getElementById(id);
+    const escape = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const fmtDate = (ts) => {
+      if (!ts) return "—";
+      const d = ts.toDate ? ts.toDate() : new Date(ts);
+      return d.toLocaleString("en-IN",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"});
+    };
+    const toast = (msg, isErr=false) => {
+      const t = $("toast");
+      t.textContent = msg;
+      t.classList.toggle("error", isErr);
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 3000);
+    };
+
+    let me = null;
+    let myHospital = null;
+    let allRequests = [];
+    let allSos = [];
+    let drivers = {};
+    let booted = false;
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        // Only redirect on the FIRST null emission — subsequent transient
+        // nulls from token refresh blips should not log us out.
+        if (!booted) location.replace("/hospital/login.html");
+        return;
+      }
+      if (booted && me && me.uid === user.uid) return; // same user re-emit
+      try {
+        const h = await getDoc(doc(db, "hospitals", user.uid));
+        if (!h.exists()) {
+          await signOut(auth);
+          return location.replace("/hospital/login.html");
+        }
+        me = user;
+        myHospital = h.data();
+        booted = true;
+        $("hosp-name").textContent = myHospital.name || "Hospital";
+        $("hosp-email").textContent = user.email;
+
+        // Sync status pill with isActive
+        updateStatusPill(myHospital.isActive !== false);
+
+        bootData();
+      } catch (e) {
+        console.warn("Auth guard read failed; will retry on next emission:", e);
+      }
+    });
+
+    $("logout").onclick = async () => { await signOut(auth); location.replace("/hospital/login.html"); };
+
+    function updateStatusPill(active) {
+      const p = $("status-pill");
+      p.textContent = active ? "Active" : "Inactive";
+      p.classList.toggle("off", !active);
+    }
+    $("status-pill").onclick = async () => {
+      const newState = !(myHospital.isActive !== false);
+      try {
+        await updateDoc(doc(db, "hospitals", me.uid), { isActive: newState });
+        myHospital.isActive = newState;
+        updateStatusPill(newState);
+        toast(newState ? "Now accepting patients" : "Marked inactive");
+      } catch (e) { toast("Failed: " + e.message, true); }
+    };
+
+    function bootData() {
+      // Listen to ALL rescue requests — filter client-side for ones relevant to us
+      // (pending_hospital, hospital_assigned to us, completed)
+      onSnapshot(
+        query(collection(db, "rescue_requests"), orderBy("createdAt","desc"), limit(100)),
+        snap => {
+          allRequests = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+          render();
+        }
+      );
+
+      // SOS requests — show as incoming patients once a driver has
+      // accepted (status === "assigned").  Hospitals can claim one;
+      // when claimed it gets `assignedHospitalId` set.
+      onSnapshot(
+        query(collection(db, "sos_requests"), orderBy("createdAt","desc"), limit(100)),
+        snap => {
+          allSos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+          render();
+        }
+      );
+
+      // Drivers cache (read once — could be live)
+      onSnapshot(collection(db, "drivers"), snap => {
+        drivers = {};
+        snap.docs.forEach(d => drivers[d.id] = d.data());
+        render();
+      });
+    }
+
+    let prevAlertCount = 0;
+    function render() {
+      // Pending hospital from rescue_requests
+      const pendingRescue = allRequests.filter(r =>
+        r.status === "pending_hospital" || r.status === "patient_picked_up"
+      );
+      // Pending hospital from SOS — driver accepted, no hospital yet
+      const pendingSos = allSos.filter(s =>
+        s.status === "assigned" &&
+        (!s.assignedHospitalId || s.assignedHospitalId === "")
+      ).map(s => ({
+        // Normalize SOS shape into the same structure render() expects
+        id: s.id,
+        _isSos: true,
+        patientName: s.patientName || "—",
+        patientPhone: s.phone || "",
+        emergencyType: s.emergencyType || "Emergency",
+        assignedDriverId: s.driverId,
+        driverName: s.driverName,
+        driverPhone: s.driverPhone,
+        vehicleNumber: s.vehicleNumber,
+        pickupLatitude: s.latitude,
+        pickupLongitude: s.longitude,
+        status: s.status,
+        createdAt: s.createdAt,
+      }));
+      const pending = [...pendingSos, ...pendingRescue];
+      // Assigned to us → en route (rescue_requests + SOS)
+      const enrouteRescue = allRequests.filter(r =>
+        r.assignedHospitalId === me.uid &&
+        ["hospital_assigned","in_transit"].includes(r.status)
+      );
+      const enrouteSos = allSos.filter(s =>
+        s.assignedHospitalId === me.uid &&
+        s.status === "assigned"
+      ).map(s => ({
+        id: s.id,
+        _isSos: true,
+        patientName: s.patientName || "—",
+        patientPhone: s.phone || "",
+        emergencyType: s.emergencyType || "Emergency",
+        assignedDriverId: s.driverId,
+        driverName: s.driverName,
+        vehicleNumber: s.vehicleNumber,
+        pickupLatitude: s.latitude,
+        pickupLongitude: s.longitude,
+        status: "hospital_assigned",
+        createdAt: s.createdAt,
+      }));
+      const enroute = [...enrouteSos, ...enrouteRescue];
+      // Today's completed (assigned to us)
+      const today = new Date(); today.setHours(0,0,0,0);
+      const todayCompleted = allRequests.filter(r =>
+        r.assignedHospitalId === me.uid &&
+        r.status === "completed" &&
+        r.createdAt && (r.createdAt.toDate ? r.createdAt.toDate() : new Date(r.createdAt)) >= today
+      );
+      const totalForUs = allRequests.filter(r => r.assignedHospitalId === me.uid).length;
+
+      $("s-pending").textContent = pending.length;
+      $("s-enroute").textContent = enroute.length;
+      $("s-today").textContent = todayCompleted.length;
+      $("s-total").textContent = totalForUs;
+
+      // Audible chime if new pending appeared
+      if (pending.length > prevAlertCount) {
+        try { new Audio("data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=").play().catch(()=>{}); } catch(e){}
+      }
+      prevAlertCount = pending.length;
+
+      // Live alerts
+      const wrap = $("live-alerts");
+      if (!pending.length) {
+        wrap.innerHTML = '';
+      } else {
+        wrap.innerHTML = pending.map(r => {
+          const drv = drivers[r.assignedDriverId] || {};
+          const isAssignedToUs = r.assignedHospitalId === me.uid;
+          return `<div class="alert-card">
+            <div class="alert-head">
+              <span class="label">🚨 Incoming Patient</span>
+              <h3>${escape(r.patientName || r.requesterName || "Unknown patient")}</h3>
+            </div>
+            <div class="alert-info">
+              <div><label>Emergency</label><div class="val">${escape(r.emergencyType || "Unspecified")}</div></div>
+              <div><label>Patient Phone</label><div class="val">${escape(r.patientPhone || r.requesterPhone || "—")}</div></div>
+              <div><label>Driver</label><div class="val">${escape(drv.name || "Unassigned")} ${drv.phone ? `<small style="color:var(--muted)">· ${escape(drv.phone)}</small>` : ""}</div></div>
+              <div><label>Vehicle</label><div class="val">${escape(drv.vehicleNumber || "—")}</div></div>
+            </div>
+            <div class="alert-actions">
+              ${isAssignedToUs
+                ? `<button class="btn-big btn-track" onclick="window.open('https://maps.google.com/?q=${r.pickupLatitude||0},${r.pickupLongitude||0}','_blank')">📍 Track Ambulance</button>
+                   <button class="btn-big btn-accept" onclick="markReceived('${r.id}')">✓ Mark Patient Received</button>`
+                : `<button class="btn-big btn-accept" onclick="acceptPatient('${r.id}')">✓ Accept Patient</button>
+                   <button class="btn-big btn-decline" onclick="declinePatient('${r.id}')">Decline</button>`}
+            </div>
+          </div>`;
+        }).join('');
+      }
+
+      // Active table
+      const at = $("active-tbody");
+      if (!enroute.length) {
+        at.innerHTML = '<tr><td colspan="6" class="empty"><div class="icon">🚑</div><h3>No active ambulances</h3><p>Incoming patients will show up here.</p></td></tr>';
+      } else {
+        at.innerHTML = enroute.map(r => {
+          const drv = drivers[r.assignedDriverId] || {};
+          return `<tr>
+            <td><strong>${escape(r.patientName||r.requesterName||"—")}</strong><br><small style="color:var(--muted)">${escape(r.patientPhone||r.requesterPhone||"")}</small></td>
+            <td>${escape(r.emergencyType||"—")}</td>
+            <td>${escape(drv.name||"—")}<br><small style="color:var(--muted)">${escape(drv.vehicleNumber||"")}</small></td>
+            <td><span class="pill pill-active">${escape(r.status)}</span></td>
+            <td>${escape(r.eta || "—")}</td>
+            <td>
+              <button class="btn-big" style="padding:8px 14px;font-size:12px" onclick="window.open('https://maps.google.com/?q=${r.pickupLatitude||0},${r.pickupLongitude||0}','_blank')">📍 Track</button>
+            </td>
+          </tr>`;
+        }).join('');
+      }
+
+      // History — assigned to us, sorted by date
+      const hist = allRequests.filter(r => r.assignedHospitalId === me.uid).slice(0, 30);
+      const ht = $("hist-tbody");
+      if (!hist.length) {
+        ht.innerHTML = '<tr><td colspan="4" class="empty"><div class="icon">📜</div><h3>No history yet</h3></td></tr>';
+      } else {
+        ht.innerHTML = hist.map(r => {
+          const drv = drivers[r.assignedDriverId] || {};
+          const cls = r.status === "completed" ? "completed" : "active";
+          return `<tr>
+            <td><small>${fmtDate(r.createdAt)}</small></td>
+            <td>${escape(r.patientName||r.requesterName||"—")}</td>
+            <td><span class="pill pill-${cls}">${escape(r.status)}</span></td>
+            <td>${escape(drv.name||"—")}</td>
+          </tr>`;
+        }).join('');
+      }
+    }
+
+    // Find which collection a pending alert came from (SOS vs rescue_requests)
+    function isSosId(id) {
+      return allSos.some(s => s.id === id);
+    }
+
+    window.acceptPatient = async (id) => {
+      try {
+        const sosDoc = allSos.find(s => s.id === id);
+        if (sosDoc) {
+          // SOS path — copy hospital info into the SOS doc so the
+          // driver app can navigate to us and the customer can see
+          // the hospital on their tracking page.
+          await updateDoc(doc(db, "sos_requests", id), {
+            assignedHospitalId: me.uid,
+            hospitalName: myHospital.name || "Hospital",
+            hospitalPhone: myHospital.phone || "",
+            hospitalAddress: myHospital.address || "",
+            hospitalLat: myHospital.location?.latitude ?? null,
+            hospitalLng: myHospital.location?.longitude ?? null,
+            hospitalAcceptedAt: serverTimestamp(),
+          });
+        } else {
+          // rescue_requests path
+          await updateDoc(doc(db, "rescue_requests", id), {
+            assignedHospitalId: me.uid,
+            status: "hospital_assigned",
+            hospitalAcceptedAt: serverTimestamp(),
+          });
+        }
+        toast("Patient accepted — ambulance notified");
+      } catch (e) { toast("Failed: " + e.message, true); }
+    };
+    window.declinePatient = async (_id) => {
+      // Decline is local-only (this hospital opts out of THIS request).
+      // Another hospital can still accept.
+      toast("Declined locally — other hospitals can still accept");
+    };
+    window.markReceived = async (id) => {
+      if (!confirm("Mark this patient as received?")) return;
+      try {
+        if (isSosId(id)) {
+          await updateDoc(doc(db, "sos_requests", id), {
+            status: "resolved",
+            resolvedAt: serverTimestamp(),
+          });
+        } else {
+          await updateDoc(doc(db, "rescue_requests", id), {
+            status: "completed",
+            completedAt: serverTimestamp(),
+          });
+        }
+        toast("Marked as received");
+      } catch (e) { toast("Failed: " + e.message, true); }
+    };
+  </script>
+</body>
+</html>

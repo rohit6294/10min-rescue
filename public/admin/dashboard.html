@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Admin Dashboard — 10MinRescue</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23FF3B3B'/%3E%3Cpath d='M50 25v50M25 50h50' stroke='white' stroke-width='10' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <!-- Leaflet for the hospital map picker (free OpenStreetMap, no API key) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --navy:#0B1D3A;--card:#152644;--line:#1e3a5f;
+      --red:#FF3B3B;--green:#22C55E;--blue:#2563EB;--amber:#F59E0B;
+      --muted:#94a3b8;--dim:#64748b;
+    }
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      background:var(--navy);color:#fff;min-height:100vh;
+      display:flex;
+    }
+
+    /* ── Mobile Top Bar (only shown on mobile) ───── */
+    .mobile-bar{
+      display:none;position:sticky;top:0;z-index:30;
+      background:#06122a;border-bottom:1px solid var(--line);
+      padding:12px 16px;align-items:center;justify-content:space-between;
+    }
+    .mobile-bar .brand{display:flex;align-items:center;gap:10px}
+    .mobile-bar .brand-mark{width:34px;height:34px;border-radius:9px;background:var(--red);display:flex;align-items:center;justify-content:center}
+    .mobile-bar .brand-mark svg{width:18px;height:18px;color:#fff}
+    .burger{
+      background:none;border:1px solid var(--line);color:#fff;
+      width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+      cursor:pointer;font-size:18px;
+    }
+    .burger:hover{background:rgba(255,255,255,0.05)}
+    .scrim{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:40}
+    .scrim.show{display:block}
+
+    /* ── Sidebar ─────────────────────────────────── */
+    aside{
+      width:240px;background:#06122a;border-right:1px solid var(--line);
+      display:flex;flex-direction:column;padding:24px 16px;
+      position:sticky;top:0;height:100vh;flex-shrink:0;
+      transition:transform .25s ease;
+    }
+    .brand{display:flex;align-items:center;gap:10px;padding:0 8px;margin-bottom:32px;text-decoration:none;color:#fff}
+    .brand-mark{
+      width:38px;height:38px;border-radius:10px;background:var(--red);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 4px 12px rgba(255,59,59,0.4);
+    }
+    .brand-mark svg{width:20px;height:20px;color:#fff}
+    .brand-name{font-weight:900;font-size:16px}
+    .brand-name span{color:var(--red)}
+
+    nav.tabs{display:flex;flex-direction:column;gap:4px}
+    .tab{
+      display:flex;align-items:center;gap:12px;
+      padding:11px 14px;border-radius:10px;color:#cbd5e1;
+      cursor:pointer;font-size:14px;font-weight:500;
+      background:none;border:none;text-align:left;width:100%;
+      transition:background .15s, color .15s;
+    }
+    .tab svg{width:18px;height:18px;flex-shrink:0}
+    .tab:hover{background:rgba(255,255,255,0.05);color:#fff}
+    .tab.active{background:rgba(255,59,59,0.15);color:#fff}
+    .tab.active svg{color:var(--red)}
+    .badge-count{
+      margin-left:auto;background:var(--red);color:#fff;
+      font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px;
+      min-width:20px;text-align:center;
+    }
+
+    .side-bottom{margin-top:auto;padding-top:18px;border-top:1px solid var(--line)}
+    .user-row{display:flex;align-items:center;gap:10px;padding:8px;font-size:13px;color:var(--muted)}
+    .user-row strong{color:#fff;display:block;font-size:13px}
+    .user-row small{font-size:11px;color:var(--dim)}
+    .logout-btn{
+      width:100%;background:none;border:1px solid var(--line);color:#cbd5e1;
+      padding:10px;border-radius:10px;font-size:13px;cursor:pointer;margin-top:10px;
+    }
+    .logout-btn:hover{border-color:var(--red);color:var(--red)}
+
+    /* ── Main ────────────────────────────────────── */
+    main{flex:1;padding:32px 36px;min-width:0}
+    .page-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;gap:16px;flex-wrap:wrap}
+    h1{font-size:26px;font-weight:900;letter-spacing:-0.5px}
+    .page-head p{color:var(--muted);font-size:14px;margin-top:4px}
+    .page-actions{display:flex;gap:10px;align-items:center}
+    .search{
+      background:var(--card);border:1px solid var(--line);
+      border-radius:11px;padding:9px 14px;color:#fff;font-size:14px;
+      outline:none;width:240px;
+    }
+    .search:focus{border-color:var(--red)}
+    .add-btn{
+      background:var(--red);color:#fff;border:none;
+      padding:10px 18px;border-radius:11px;font-weight:700;font-size:14px;
+      cursor:pointer;display:inline-flex;align-items:center;gap:6px;
+    }
+    .add-btn:hover{background:#E11D2E}
+
+    /* ── Stats ─────────────────────────────────── */
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+    .stat-card{
+      background:var(--card);border:1px solid var(--line);
+      border-radius:16px;padding:20px;
+    }
+    .stat-card h3{font-size:13px;color:var(--muted);font-weight:600;margin-bottom:8px}
+    .stat-card .num{font-size:30px;font-weight:900;letter-spacing:-1px}
+    .stat-card .num.red{color:var(--red)}
+    .stat-card .num.green{color:var(--green)}
+    .stat-card .num.amber{color:var(--amber)}
+    .stat-card .num.blue{color:#60a5fa}
+
+    /* ── Tables ────────────────────────────────── */
+    .table-wrap{
+      background:var(--card);border:1px solid var(--line);
+      border-radius:16px;overflow:hidden;
+    }
+    table{width:100%;border-collapse:collapse}
+    th{
+      text-align:left;padding:14px 18px;
+      font-size:12px;font-weight:700;color:var(--muted);
+      text-transform:uppercase;letter-spacing:0.6px;
+      background:rgba(0,0,0,0.15);border-bottom:1px solid var(--line);
+    }
+    td{padding:16px 18px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:middle}
+    tr:last-child td{border-bottom:none}
+    tr:hover td{background:rgba(255,255,255,0.02)}
+
+    .pill{
+      display:inline-block;padding:4px 10px;border-radius:999px;
+      font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;
+    }
+    .pill-pending{background:rgba(245,158,11,0.15);color:#fbbf24}
+    .pill-verified{background:rgba(34,197,94,0.15);color:#86efac}
+    .pill-rejected{background:rgba(255,59,59,0.15);color:#fca5a5}
+    .pill-active{background:rgba(34,197,94,0.15);color:#86efac}
+    .pill-inactive{background:rgba(100,116,139,0.2);color:#94a3b8}
+
+    .row-actions{display:flex;gap:8px}
+    .act{
+      padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;
+      border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:4px;
+    }
+    .act-view{background:rgba(37,99,235,0.15);color:#93c5fd}
+    .act-view:hover{background:rgba(37,99,235,0.25)}
+    .act-approve{background:rgba(34,197,94,0.15);color:#86efac}
+    .act-approve:hover{background:rgba(34,197,94,0.25)}
+    .act-reject{background:rgba(255,59,59,0.15);color:#fca5a5}
+    .act-reject:hover{background:rgba(255,59,59,0.25)}
+    .act-del{background:rgba(255,59,59,0.1);color:#fca5a5}
+    .act-del:hover{background:rgba(255,59,59,0.25)}
+
+    .empty{padding:60px 24px;text-align:center;color:var(--muted)}
+    .empty .icon{font-size:48px;margin-bottom:12px;opacity:0.5}
+    .empty h3{font-size:16px;color:#cbd5e1;margin-bottom:4px}
+
+    .page{display:none}
+    .page.show{display:block}
+
+    /* ── Modal ────────────────────────────────── */
+    .modal{
+      display:none;position:fixed;inset:0;
+      background:rgba(0,0,0,0.7);z-index:100;
+      align-items:center;justify-content:center;padding:20px;
+    }
+    .modal.show{display:flex}
+    .modal-box{
+      background:var(--card);border:1px solid var(--line);
+      border-radius:18px;width:100%;max-width:720px;
+      max-height:90vh;overflow-y:auto;
+    }
+    .modal-head{padding:20px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+    .modal-head h2{font-size:18px;font-weight:800}
+    .x-btn{background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer}
+    .x-btn:hover{color:#fff}
+    .modal-body{padding:24px}
+
+    .field-row{display:grid;grid-template-columns:160px 1fr;gap:14px;margin-bottom:14px;align-items:start}
+    .field-row label{color:var(--muted);font-size:13px;font-weight:600}
+    .field-row .val{font-size:14px;word-break:break-word}
+
+    .docs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-top:18px}
+    .doc-item{
+      background:var(--navy);border:1px solid var(--line);
+      border-radius:12px;padding:12px;text-align:center;
+    }
+    .doc-item img{width:100%;height:120px;object-fit:cover;border-radius:8px;cursor:zoom-in;background:#000}
+    .doc-item .doc-lbl{font-size:11px;color:var(--muted);margin-top:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+
+    .modal-actions{padding:18px 24px;border-top:1px solid var(--line);display:flex;gap:10px;justify-content:flex-end}
+
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .form-grid.full{grid-template-columns:1fr}
+    .form-row label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:600}
+    .form-row input, .form-row textarea{
+      width:100%;background:var(--navy);border:1px solid var(--line);
+      border-radius:10px;padding:11px 13px;color:#fff;font-size:14px;outline:none;font-family:inherit;
+    }
+    .form-row input:focus, .form-row textarea:focus{border-color:var(--red)}
+    .form-row textarea{min-height:80px;resize:vertical}
+
+    .toast{
+      position:fixed;bottom:24px;right:24px;z-index:200;
+      background:#16A34A;color:#fff;padding:14px 22px;border-radius:12px;
+      font-size:14px;font-weight:600;opacity:0;transform:translateY(10px);
+      transition:opacity .2s, transform .2s;box-shadow:0 16px 40px rgba(0,0,0,0.4);
+    }
+    .toast.show{opacity:1;transform:translateY(0)}
+    .toast.error{background:#DC2626}
+
+    /* full-screen image viewer */
+    .lightbox{
+      display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:300;
+      align-items:center;justify-content:center;padding:24px;cursor:zoom-out;
+    }
+    .lightbox.show{display:flex}
+    .lightbox img{max-width:100%;max-height:100%;border-radius:8px}
+
+    /* Tablets ─────────────────────────────────── */
+    @media (max-width: 1100px){
+      .stats{grid-template-columns:repeat(2,1fr)}
+      .page-actions{flex-wrap:wrap}
+      .search{width:200px}
+    }
+
+    /* Mobile ──────────────────────────────────── */
+    @media (max-width: 760px){
+      body{flex-direction:column}
+      .mobile-bar{display:flex}
+
+      /* Sidebar becomes a slide-out drawer */
+      aside{
+        position:fixed;top:0;left:0;height:100vh;width:260px;
+        z-index:50;transform:translateX(-100%);
+        box-shadow:0 0 40px rgba(0,0,0,0.5);
+      }
+      aside.open{transform:translateX(0)}
+
+      main{padding:18px 14px;width:100%}
+      .page-head{flex-direction:column;align-items:stretch;gap:12px}
+      .page-head h1{font-size:22px}
+      .page-actions{width:100%}
+      .search{width:100%;flex:1}
+      .add-btn{width:100%;justify-content:center}
+      .stats{grid-template-columns:repeat(2,1fr);gap:12px}
+      .stat-card{padding:16px}
+      .stat-card .num{font-size:24px}
+
+      /* Tables → horizontal scroll wrapper */
+      .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+      table{min-width:580px;font-size:13px}
+      th, td{padding:11px 12px}
+      .row-actions{flex-wrap:nowrap}
+      .row-actions .act{padding:5px 9px;font-size:11px}
+
+      /* Modal full-screen on mobile */
+      .modal{padding:0;align-items:flex-end}
+      .modal-box{
+        max-height:100vh;max-width:100%;height:100vh;
+        border-radius:16px 16px 0 0;display:flex;flex-direction:column;
+      }
+      .modal-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+      .field-row{grid-template-columns:1fr;gap:4px}
+      .field-row label{font-size:11px;text-transform:uppercase;letter-spacing:0.5px}
+      .form-grid{grid-template-columns:1fr}
+      .docs-grid{grid-template-columns:repeat(2,1fr)}
+      .modal-actions{flex-wrap:wrap}
+      .modal-actions .act, .modal-actions .add-btn{flex:1;min-width:120px;justify-content:center}
+    }
+
+    /* Small phones ─────────────────────────────── */
+    @media (max-width: 420px){
+      .stats{grid-template-columns:1fr}
+      .stat-card .num{font-size:28px}
+      h1{font-size:20px}
+      .docs-grid{grid-template-columns:1fr}
+      .toast{left:12px;right:12px;bottom:12px}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Mobile Top Bar (hidden on desktop) ───── -->
+  <div class="mobile-bar">
+    <a href="/" class="brand">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/></svg></span>
+      <span style="font-weight:900;font-size:15px">10Min<span style="color:var(--red)">Rescue</span></span>
+    </a>
+    <button class="burger" id="burger" aria-label="Open menu">☰</button>
+  </div>
+  <div class="scrim" id="scrim"></div>
+
+  <!-- ── Sidebar ─────────────────────────────────── -->
+  <aside id="sidebar">
+    <a href="/" class="brand">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/></svg></span>
+      <span class="brand-name">10Min<span>Rescue</span></span>
+    </a>
+
+    <nav class="tabs">
+      <button class="tab active" data-tab="overview">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span>Overview</span>
+      </button>
+      <button class="tab" data-tab="drivers">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 16H9m10 0h3v-3.15a1 1 0 00-.84-.99L16 11l-2.7-3.6a1 1 0 00-.8-.4H5.24a2 2 0 00-1.8 1.1l-.8 1.63A6 6 0 002 12.42V16h2"/><circle cx="6.5" cy="16.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></svg>
+        <span>Drivers</span>
+        <span class="badge-count" id="badge-drivers" style="display:none">0</span>
+      </button>
+      <button class="tab" data-tab="hospitals">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1m4 0h1M9 13h1m4 0h1M9 17h1m4 0h1"/></svg>
+        <span>Hospitals</span>
+      </button>
+      <button class="tab" data-tab="sos">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>SOS Requests</span>
+        <span class="badge-count" id="badge-sos" style="display:none">0</span>
+      </button>
+      <button class="tab" data-tab="rescues">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17V8h12v9h-3a2 2 0 11-4 0H6a2 2 0 11-3 0zm15-6h2.5L23 14v3h-1a2 2 0 11-4 0h-.5V8h-1.5"/></svg>
+        <span>Rescues</span>
+      </button>
+    </nav>
+
+    <div class="side-bottom">
+      <div class="user-row">
+        <span style="width:34px;height:34px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">A</span>
+        <div>
+          <strong id="user-email">Loading…</strong>
+          <small>Owner</small>
+        </div>
+      </div>
+      <button class="logout-btn" id="logout">Logout</button>
+    </div>
+  </aside>
+
+  <!-- ── Main Content ────────────────────────────── -->
+  <main>
+
+    <!-- Overview -->
+    <section class="page show" id="page-overview">
+      <div class="page-head">
+        <div>
+          <h1>Overview</h1>
+          <p>Real-time platform status</p>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat-card"><h3>Pending Drivers</h3><div class="num amber" id="s-drivers-pending">—</div></div>
+        <div class="stat-card"><h3>Verified Drivers</h3><div class="num green" id="s-drivers-verified">—</div></div>
+        <div class="stat-card"><h3>Active Hospitals</h3><div class="num blue" id="s-hospitals">—</div></div>
+        <div class="stat-card"><h3>Open SOS</h3><div class="num red" id="s-sos-open">—</div></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Recent SOS</th><th>Status</th><th>Time</th></tr></thead>
+          <tbody id="recent-sos-tbody"><tr><td colspan="3" class="empty"><div class="icon">⏳</div><h3>Loading…</h3></td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Drivers -->
+    <section class="page" id="page-drivers">
+      <div class="page-head">
+        <div><h1>Drivers</h1><p>Verify documents and manage driver accounts</p></div>
+        <div class="page-actions">
+          <input class="search" id="driver-search" placeholder="Search by name, email, phone…" />
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Phone</th><th>Vehicle</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead>
+          <tbody id="drivers-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Hospitals -->
+    <section class="page" id="page-hospitals">
+      <div class="page-head">
+        <div><h1>Hospitals</h1><p>Add hospitals and manage their accounts</p></div>
+        <div class="page-actions">
+          <input class="search" id="hospital-search" placeholder="Search hospitals…" />
+          <button class="add-btn" onclick="openAddHospital()">+ Add Hospital</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Phone</th><th>Address</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="hospitals-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SOS Requests -->
+    <section class="page" id="page-sos">
+      <div class="page-head">
+        <div><h1>SOS Requests</h1><p>Live feed of emergency requests</p></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Time</th><th>Phone</th><th>Location</th><th>Status</th><th>Driver</th><th>Actions</th></tr></thead>
+          <tbody id="sos-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Rescues -->
+    <section class="page" id="page-rescues">
+      <div class="page-head">
+        <div><h1>Rescue Requests</h1><p>All in-progress and completed rides</p></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Time</th><th>Patient</th><th>Status</th><th>Driver</th><th>Hospital</th></tr></thead>
+          <tbody id="rescues-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- ── Driver Detail Modal ─────────────────────── -->
+  <div class="modal" id="m-driver">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h2 id="m-driver-title">Driver Details</h2>
+        <button class="x-btn" onclick="closeModal('m-driver')">×</button>
+      </div>
+      <div class="modal-body" id="m-driver-body"></div>
+      <div class="modal-actions" id="m-driver-actions"></div>
+    </div>
+  </div>
+
+  <!-- ── Hospital Form Modal ─────────────────────── -->
+  <div class="modal" id="m-hospital">
+    <div class="modal-box" style="max-width:520px">
+      <div class="modal-head">
+        <h2 id="m-hospital-title">Add Hospital</h2>
+        <button class="x-btn" onclick="closeModal('m-hospital')">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="hospital-form">
+          <input type="hidden" id="h-id" />
+          <div class="form-grid full">
+            <div class="form-row"><label>Hospital Name *</label><input id="h-name" required /></div>
+          </div>
+          <div class="form-grid">
+            <div class="form-row"><label>Email *</label><input id="h-email" type="email" required /></div>
+            <div class="form-row"><label>Phone *</label><input id="h-phone" required /></div>
+          </div>
+          <div class="form-grid full">
+            <div class="form-row">
+              <label>Hospital Location <span style="color:var(--red)">*</span> <small style="color:var(--muted);font-weight:400">(tap on the map to set, or search)</small></label>
+              <input id="h-search" type="text" placeholder="Search address e.g. 'Behala, Kolkata'" style="margin-bottom:8px" />
+              <div id="h-map" style="height:240px;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#000"></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+                <input id="h-lat" type="number" step="any" placeholder="Latitude" />
+                <input id="h-lng" type="number" step="any" placeholder="Longitude" />
+              </div>
+            </div>
+          </div>
+          <div class="form-grid full">
+            <div class="form-row"><label>Address</label><textarea id="h-addr" placeholder="Auto-fills from map; you can edit"></textarea></div>
+          </div>
+          <div class="form-grid full">
+            <div class="form-row"><label>Specializations (comma-separated)</label><input id="h-spec" placeholder="ICU, Trauma, Cardiac" /></div>
+          </div>
+          <div class="form-grid full">
+            <div class="form-row" id="pw-row">
+              <label>Initial Password * <small style="color:var(--muted);font-weight:400">(hospital uses this to log in — share with them)</small></label>
+              <input id="h-pw" type="text" placeholder="At least 6 characters" />
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-actions">
+        <button class="act act-view" onclick="closeModal('m-hospital')">Cancel</button>
+        <button class="add-btn" id="h-save">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Lightbox for documents ──────────────────── -->
+  <div class="lightbox" id="lightbox" onclick="this.classList.remove('show')">
+    <img id="lightbox-img" alt="" />
+  </div>
+
+  <!-- ── Toast ───────────────────────────────────── -->
+  <div class="toast" id="toast"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+    import {
+      getAuth, onAuthStateChanged, signOut,
+      createUserWithEmailAndPassword, signInWithEmailAndPassword,
+      setPersistence, inMemoryPersistence, browserSessionPersistence
+    } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+    import {
+      getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc,
+      collection, onSnapshot, query, where, orderBy, limit, serverTimestamp, getDocs
+    } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCmDYyhvCc03CXVi8gwQarZJgpbHIx5tKA",
+      authDomain: "min-rescue.firebaseapp.com",
+      projectId: "min-rescue",
+      storageBucket: "min-rescue.firebasestorage.app"
+    };
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db   = getFirestore(app);
+
+    // Per-tab session: keeps the admin's auth state isolated from a
+    // hospital portal tab (or any other tab on the same project).
+    setPersistence(auth, browserSessionPersistence).catch((e) =>
+      console.warn("Could not set session persistence:", e));
+
+    // Secondary app instance — used ONLY for creating new hospital
+    // Firebase Auth users.  Without this, createUserWithEmailAndPassword
+    // would immediately sign the new user into our primary app, kicking
+    // the admin out of the dashboard mid-write.
+    //
+    // CRITICAL: set in-memory persistence so this instance NEVER writes
+    // to IndexedDB.  Otherwise it shares storage with the primary app
+    // (same projectId / authDomain) and signing in/out on it leaks into
+    // the admin's primary session — silently logging the admin out.
+    const secondaryApp  = initializeApp(firebaseConfig, "secondary");
+    const secondaryAuth = getAuth(secondaryApp);
+    const secondaryDb   = getFirestore(secondaryApp);
+    setPersistence(secondaryAuth, inMemoryPersistence).catch((e) => {
+      console.warn("Could not set in-memory persistence on secondary auth:", e);
+    });
+
+    // ── Auth Guard ──────────────────────────────
+    // Once we've successfully verified the admin, we keep `me` set and
+    // ignore subsequent null emissions from onAuthStateChanged so a
+    // transient token-refresh blip can't silently log the admin out.
+    let me = null;
+    let booted = false;
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        // Only redirect if we never managed to authenticate in the first
+        // place — i.e. the page was opened with no admin session.
+        if (!booted) location.replace("/admin/login.html");
+        return;
+      }
+      if (booted && me && me.uid === user.uid) return; // same user — ignore re-emissions
+      try {
+        const a = await getDoc(doc(db, "admins", user.uid));
+        if (!a.exists()) {
+          await signOut(auth);
+          return location.replace("/admin/login.html");
+        }
+        me = user;
+        booted = true;
+        document.getElementById("user-email").textContent = user.email;
+        bootData();
+      } catch (e) {
+        console.warn("Auth guard read failed; will retry on next emission:", e);
+      }
+    });
+
+    document.getElementById("logout").onclick = async () => {
+      await signOut(auth); location.replace("/admin/login.html");
+    };
+
+    // ── Mobile burger menu ──────────────────────
+    const sidebar = document.getElementById("sidebar");
+    const scrim   = document.getElementById("scrim");
+    const burger  = document.getElementById("burger");
+    function closeSidebar(){ sidebar.classList.remove("open"); scrim.classList.remove("show"); }
+    function openSidebar(){ sidebar.classList.add("open"); scrim.classList.add("show"); }
+    if (burger) burger.onclick = openSidebar;
+    if (scrim)  scrim.onclick  = closeSidebar;
+
+    // ── Tab routing ─────────────────────────────
+    document.querySelectorAll(".tab").forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".page").forEach(p => p.classList.remove("show"));
+        btn.classList.add("active");
+        document.getElementById("page-" + btn.dataset.tab).classList.add("show");
+        // On mobile, close the drawer after picking a tab
+        closeSidebar();
+      };
+    });
+
+    // ── Helpers ─────────────────────────────────
+    const $ = (id) => document.getElementById(id);
+    const fmtDate = (ts) => {
+      if (!ts) return "—";
+      const d = ts.toDate ? ts.toDate() : new Date(ts);
+      return d.toLocaleString("en-IN", {day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"});
+    };
+    const escape = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const toast = (msg, isErr=false) => {
+      const t = $("toast");
+      t.textContent = msg;
+      t.classList.toggle("error", isErr);
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 3000);
+    };
+    const closeModalFn = (id) => $(id).classList.remove("show");
+    window.closeModal = closeModalFn;
+
+    // ── Live data state ─────────────────────────
+    // drivers = merge of /drivers/{uid} (driver-specific fields) + /users/{uid} (email, displayName, createdAt)
+    let driversRaw = [], usersByUid = {};
+    let drivers = [], hospitals = [], sos = [], rescues = [];
+
+    function mergeDrivers() {
+      drivers = driversRaw.map(d => {
+        const u = usersByUid[d.id] || {};
+        // drivers fields override users fields where both exist
+        return {
+          ...u,
+          ...d,
+          // Always prefer users.email since it's the auth email
+          email: u.email || d.email || null,
+          // Display name: drivers.name first, then users.displayName
+          name: d.name || u.displayName || null,
+          // createdAt: prefer users.createdAt (registration timestamp)
+          createdAt: u.createdAt || d.createdAt || d.docsSubmittedAt || null,
+        };
+      });
+    }
+
+    function bootData() {
+      // Users (we read this so we can pull email/displayName for drivers)
+      onSnapshot(collection(db, "users"), snap => {
+        usersByUid = {};
+        snap.docs.forEach(d => usersByUid[d.id] = d.data());
+        mergeDrivers();
+        renderDrivers(); renderOverview();
+      });
+      // Drivers
+      onSnapshot(collection(db, "drivers"), snap => {
+        driversRaw = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        mergeDrivers();
+        renderDrivers(); renderOverview();
+      });
+      // Hospitals
+      onSnapshot(collection(db, "hospitals"), snap => {
+        hospitals = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderHospitals(); renderOverview();
+      });
+      // SOS — most recent 100
+      onSnapshot(query(collection(db, "sos_requests"), orderBy("createdAt","desc"), limit(100)), snap => {
+        sos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderSos(); renderOverview();
+      });
+      // Rescues
+      onSnapshot(query(collection(db, "rescue_requests"), orderBy("createdAt","desc"), limit(100)), snap => {
+        rescues = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderRescues();
+      });
+    }
+
+    // ── Overview ────────────────────────────────
+    function renderOverview() {
+      const pending  = drivers.filter(d => (d.verificationStatus || "pending") === "pending").length;
+      const verified = drivers.filter(d => d.verificationStatus === "verified").length;
+      const sosOpen  = sos.filter(s => s.status === "pending" || s.status === "assigned").length;
+      $("s-drivers-pending").textContent = pending;
+      $("s-drivers-verified").textContent = verified;
+      $("s-hospitals").textContent = hospitals.length;
+      $("s-sos-open").textContent = sosOpen;
+
+      // Sidebar badges
+      $("badge-drivers").style.display = pending ? "inline-block" : "none";
+      $("badge-drivers").textContent = pending;
+      $("badge-sos").style.display = sosOpen ? "inline-block" : "none";
+      $("badge-sos").textContent = sosOpen;
+
+      // Recent SOS
+      const recent = sos.slice(0, 5);
+      const tb = $("recent-sos-tbody");
+      if (!recent.length) {
+        tb.innerHTML = '<tr><td colspan="3" class="empty"><div class="icon">📭</div><h3>No SOS yet</h3></td></tr>';
+      } else {
+        tb.innerHTML = recent.map(s =>
+          `<tr><td>${escape(s.phone || "Unknown")} → <a href="${s.mapsLink}" target="_blank" style="color:#60a5fa;text-decoration:none">${(s.latitude||0).toFixed(4)}, ${(s.longitude||0).toFixed(4)}</a></td>
+           <td><span class="pill pill-${s.status === 'resolved' ? 'verified' : s.status === 'assigned' ? 'active' : 'pending'}">${escape(s.status)}</span></td>
+           <td>${fmtDate(s.createdAt)}</td></tr>`
+        ).join("");
+      }
+    }
+
+    // ── Drivers ─────────────────────────────────
+    function renderDrivers() {
+      const q = ($("driver-search").value || "").toLowerCase();
+      const list = drivers
+        .filter(d => !q || (d.name||"").toLowerCase().includes(q) || (d.phone||"").includes(q) || (d.email||"").toLowerCase().includes(q))
+        .sort((a,b) => {
+          // pending first
+          const sa = (a.verificationStatus || "pending");
+          const sb = (b.verificationStatus || "pending");
+          if (sa !== sb) return sa === "pending" ? -1 : sb === "pending" ? 1 : 0;
+          return 0;
+        });
+      const tb = $("drivers-tbody");
+      if (!list.length) {
+        tb.innerHTML = '<tr><td colspan="6" class="empty"><div class="icon">👥</div><h3>No drivers yet</h3><p>Drivers will appear here after they sign up via the mobile app.</p></td></tr>';
+        return;
+      }
+      tb.innerHTML = list.map(d => {
+        const st = d.verificationStatus || "pending";
+        return `<tr>
+          <td><strong>${escape(d.name||"Unnamed")}</strong><br><small style="color:var(--muted)">${escape(d.email||d.id)}</small></td>
+          <td>${escape(d.phone||"—")}</td>
+          <td>${escape(d.vehicleNumber||"—")}<br><small style="color:var(--muted)">Lic: ${escape(d.licenseNumber||"—")}</small></td>
+          <td><span class="pill pill-${st}">${escape(st)}</span></td>
+          <td>${fmtDate(d.createdAt)}</td>
+          <td><div class="row-actions">
+            <button class="act act-view" onclick="viewDriver('${d.id}')">View</button>
+          </div></td>
+        </tr>`;
+      }).join("");
+    }
+    $("driver-search").oninput = renderDrivers;
+
+    window.viewDriver = (id) => {
+      const d = drivers.find(x => x.id === id);
+      if (!d) return;
+      $("m-driver-title").textContent = `Driver: ${d.name || d.displayName || "Unnamed"}`;
+      const docs = d.documents || {};
+      // Firestore stores keys in snake_case (aadhaar_front, etc.)
+      const docKeys = [
+        ["aadhaar_front", "Aadhaar Front"],
+        ["aadhaar_back",  "Aadhaar Back"],
+        ["license_front", "Driving License Front"],
+        ["license_back",  "Driving License Back"],
+        ["vehicle_photo", "Vehicle Photo"],
+      ];
+      const docHtml = docKeys.map(([k, label]) => {
+        const b64 = docs[k];
+        return `<div class="doc-item">
+          ${b64 ? `<img src="${b64.startsWith('data:') ? b64 : 'data:image/jpeg;base64,'+b64}" onclick="openLightbox(this.src)" alt="${escape(label)}" />`
+                : `<div style="height:120px;display:flex;align-items:center;justify-content:center;color:var(--dim);background:var(--navy);border-radius:8px;font-size:11px">— not uploaded —</div>`}
+          <div class="doc-lbl">${escape(label)}</div>
+        </div>`;
+      }).join("");
+
+      $("m-driver-body").innerHTML = `
+        <div class="field-row"><label>Name</label><div class="val">${escape(d.name||"—")}</div></div>
+        <div class="field-row"><label>Email</label><div class="val">${escape(d.email||"—")}</div></div>
+        <div class="field-row"><label>Phone</label><div class="val">${escape(d.phone||"—")}</div></div>
+        <div class="field-row"><label>Vehicle Number</label><div class="val">${escape(d.vehicleNumber||"—")}</div></div>
+        <div class="field-row"><label>License Number</label><div class="val">${escape(d.licenseNumber||"—")}</div></div>
+        <div class="field-row"><label>Status</label><div class="val"><span class="pill pill-${d.verificationStatus||'pending'}">${escape(d.verificationStatus||'pending')}</span></div></div>
+        <div class="field-row"><label>Joined</label><div class="val">${fmtDate(d.createdAt)}</div></div>
+        ${d.rejectionReason ? `<div class="field-row"><label>Rejection Reason</label><div class="val" style="color:#fca5a5">${escape(d.rejectionReason)}</div></div>` : ""}
+        <h3 style="margin-top:24px;font-size:14px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.6px">Uploaded Documents</h3>
+        <div class="docs-grid">${docHtml}</div>
+      `;
+
+      const st = d.verificationStatus || "pending";
+      $("m-driver-actions").innerHTML = `
+        ${st !== "verified" ? `<button class="act act-approve" onclick="approveDriver('${d.id}')">✓ Approve</button>` : ""}
+        ${st !== "rejected" ? `<button class="act act-reject" onclick="rejectDriver('${d.id}')">✗ Reject</button>` : ""}
+        <button class="act act-view" onclick="closeModal('m-driver')">Close</button>
+      `;
+      $("m-driver").classList.add("show");
+    };
+
+    window.openLightbox = (src) => {
+      $("lightbox-img").src = src;
+      $("lightbox").classList.add("show");
+    };
+
+    window.approveDriver = async (id) => {
+      try {
+        await updateDoc(doc(db, "drivers", id), {
+          verificationStatus: "verified",
+          verifiedAt: serverTimestamp(),
+          verifiedBy: me.uid,
+          rejectionReason: null
+        });
+        toast("Driver approved");
+        closeModalFn("m-driver");
+      } catch (e) { toast("Failed: " + e.message, true); }
+    };
+    window.rejectDriver = async (id) => {
+      const reason = prompt("Reason for rejection (will be shown to driver):");
+      if (reason === null) return;
+      try {
+        await updateDoc(doc(db, "drivers", id), {
+          verificationStatus: "rejected",
+          rejectedAt: serverTimestamp(),
+          rejectedBy: me.uid,
+          rejectionReason: reason || "Documents did not meet requirements."
+        });
+        toast("Driver rejected");
+        closeModalFn("m-driver");
+      } catch (e) { toast("Failed: " + e.message, true); }
+    };
+
+    // ── Hospitals ───────────────────────────────
+    function renderHospitals() {
+      const q = ($("hospital-search").value || "").toLowerCase();
+      const list = hospitals.filter(h => !q || (h.name||"").toLowerCase().includes(q));
+      const tb = $("hospitals-tbody");
+      if (!list.length) {
+        tb.innerHTML = '<tr><td colspan="5" class="empty"><div class="icon">🏥</div><h3>No hospitals yet</h3><p>Click "+ Add Hospital" to onboard one.</p></td></tr>';
+        return;
+      }
+      tb.innerHTML = list.map(h => `
+        <tr>
+          <td><strong>${escape(h.name||"—")}</strong><br><small style="color:var(--muted)">${escape(h.email||h.id)}</small></td>
+          <td>${escape(h.phone||"—")}</td>
+          <td><small>${escape(h.address||"—")}</small></td>
+          <td><span class="pill pill-${h.isActive ? 'active' : 'inactive'}">${h.isActive ? "Active" : "Inactive"}</span></td>
+          <td><div class="row-actions">
+            <button class="act act-view" onclick="editHospital('${h.id}')">Edit</button>
+            <button class="act act-${h.isActive ? 'reject' : 'approve'}" onclick="toggleHospital('${h.id}', ${!h.isActive})">${h.isActive ? "Disable" : "Enable"}</button>
+          </div></td>
+        </tr>
+      `).join("");
+    }
+    $("hospital-search").oninput = renderHospitals;
+
+    // ── Hospital location map picker ────────────────────────────
+    let hospMap = null;
+    let hospMarker = null;
+    function initHospMap(lat, lng) {
+      const start = [lat ?? 22.5448, lng ?? 88.3426]; // default: Alipore, Kolkata
+      // Wait until modal is visible & map div has a size
+      requestAnimationFrame(() => {
+        if (!hospMap) {
+          hospMap = L.map("h-map", { zoomControl: true, attributionControl: false })
+                     .setView(start, lat == null ? 12 : 15);
+          L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(hospMap);
+          hospMap.on("click", (e) => placeMarker(e.latlng.lat, e.latlng.lng, true));
+        } else {
+          hospMap.setView(start, lat == null ? 12 : 15);
+        }
+        if (lat != null && lng != null) placeMarker(lat, lng, false);
+        else if (hospMarker) { hospMap.removeLayer(hospMarker); hospMarker = null; }
+        setTimeout(() => hospMap.invalidateSize(), 80);
+      });
+    }
+    function placeMarker(lat, lng, reverseGeocode) {
+      if (!hospMap) return;
+      if (!hospMarker) {
+        hospMarker = L.marker([lat, lng], { draggable: true }).addTo(hospMap);
+        hospMarker.on("dragend", (e) => {
+          const p = e.target.getLatLng();
+          $("h-lat").value = p.lat.toFixed(6);
+          $("h-lng").value = p.lng.toFixed(6);
+          reverseGeo(p.lat, p.lng);
+        });
+      } else {
+        hospMarker.setLatLng([lat, lng]);
+      }
+      $("h-lat").value = (+lat).toFixed(6);
+      $("h-lng").value = (+lng).toFixed(6);
+      hospMap.panTo([lat, lng]);
+      if (reverseGeocode) reverseGeo(lat, lng);
+    }
+    async function reverseGeo(lat, lng) {
+      try {
+        const r = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18`);
+        const j = await r.json();
+        if (j && j.display_name && !$("h-addr").value.trim()) {
+          $("h-addr").value = j.display_name;
+        }
+      } catch (_) {}
+    }
+    // Address search
+    $("h-search").addEventListener("keydown", async (e) => {
+      if (e.key !== "Enter") return;
+      e.preventDefault();
+      const q = e.target.value.trim();
+      if (!q) return;
+      try {
+        const r = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&limit=1`);
+        const j = await r.json();
+        if (j && j.length) {
+          const lat = parseFloat(j[0].lat), lng = parseFloat(j[0].lon);
+          placeMarker(lat, lng, false);
+          if (j[0].display_name) $("h-addr").value = j[0].display_name;
+        } else {
+          toast("No results — try a different search", true);
+        }
+      } catch (err) { toast("Search failed: " + err.message, true); }
+    });
+    // Manual lat/lng edits push to map
+    ["h-lat","h-lng"].forEach(id => $(id).addEventListener("change", () => {
+      const lat = parseFloat($("h-lat").value), lng = parseFloat($("h-lng").value);
+      if (!isNaN(lat) && !isNaN(lng)) placeMarker(lat, lng, true);
+    }));
+
+    window.openAddHospital = () => {
+      $("m-hospital-title").textContent = "Add Hospital";
+      $("h-id").value = "";
+      ["h-name","h-email","h-phone","h-lat","h-lng","h-addr","h-spec","h-pw","h-search"].forEach(id => $(id).value = "");
+      $("pw-row").style.display = "block";
+      $("h-email").disabled = false;
+      $("m-hospital").classList.add("show");
+      initHospMap(null, null);
+    };
+    window.editHospital = (id) => {
+      const h = hospitals.find(x => x.id === id);
+      if (!h) return;
+      $("m-hospital-title").textContent = "Edit Hospital";
+      $("h-id").value = id;
+      $("h-name").value = h.name || "";
+      $("h-email").value = h.email || "";
+      $("h-email").disabled = true;
+      $("h-phone").value = h.phone || "";
+      $("h-lat").value = h.location?.latitude || "";
+      $("h-lng").value = h.location?.longitude || "";
+      $("h-addr").value = h.address || "";
+      $("h-spec").value = (h.specializations || []).join(", ");
+      $("h-search").value = "";
+      $("pw-row").style.display = "none";
+      $("m-hospital").classList.add("show");
+      const lat = h.location?.latitude, lng = h.location?.longitude;
+      initHospMap(typeof lat === "number" ? lat : null, typeof lng === "number" ? lng : null);
+    };
+    window.toggleHospital = async (id, makeActive) => {
+      try {
+        await updateDoc(doc(db, "hospitals", id), { isActive: makeActive });
+        toast(makeActive ? "Hospital enabled" : "Hospital disabled");
+      } catch (e) { toast("Failed: " + e.message, true); }
+    };
+
+    $("h-save").onclick = async () => {
+      const id = $("h-id").value;
+      const data = {
+        name: $("h-name").value.trim(),
+        email: $("h-email").value.trim(),
+        phone: $("h-phone").value.trim(),
+        address: $("h-addr").value.trim(),
+        specializations: $("h-spec").value.split(",").map(s => s.trim()).filter(Boolean),
+        isActive: true,
+      };
+      const lat = parseFloat($("h-lat").value), lng = parseFloat($("h-lng").value);
+      if (!isNaN(lat) && !isNaN(lng)) data.location = { latitude: lat, longitude: lng, geohash: "" };
+
+      if (!data.name || !data.email || !data.phone) {
+        toast("Name, email and phone are required", true); return;
+      }
+
+      $("h-save").disabled = true; $("h-save").textContent = "Saving…";
+      try {
+        if (id) {
+          await updateDoc(doc(db, "hospitals", id), data);
+          toast("Hospital updated");
+        } else {
+          const pw = $("h-pw").value;
+          if (!pw || pw.length < 6) { toast("Password must be ≥ 6 chars", true); throw new Error(); }
+          // Create the new hospital's auth user via the SECONDARY app
+          // instance.  This keeps the admin's primary session signed in
+          // and avoids the auth-state listener kicking us back to login
+          // mid-write.  If a previous attempt left an orphaned auth user
+          // (auth created but Firestore docs never written), recover by
+          // signing in to that orphaned user with the same password.
+          let cred;
+          try {
+            cred = await createUserWithEmailAndPassword(
+                secondaryAuth, data.email, pw);
+          } catch (e) {
+            if (e.code === "auth/email-already-in-use") {
+              // Try to sign in to the orphaned account.  If the password
+              // matches, we'll write the missing docs.
+              try {
+                cred = await signInWithEmailAndPassword(
+                    secondaryAuth, data.email, pw);
+                console.log("Recovered orphaned auth user:", cred.user.uid);
+              } catch (signInErr) {
+                throw new Error(
+                  "This email already has an account but the password " +
+                  "doesn't match.  Either use a different email, or set " +
+                  "the original password to the one you typed."
+                );
+              }
+            } else {
+              throw e;
+            }
+          }
+          const uid = cred.user.uid;
+
+          // Write the user + hospital docs using the secondary db (the
+          // new user is signed in there, so isOwner() rules pass).
+          // setDoc with merge:true so it works on both fresh creates and
+          // orphan recovery (won't fail if some fields already exist).
+          await setDoc(doc(secondaryDb, "users", uid), {
+            role: "hospital",
+            email: data.email,
+            createdAt: serverTimestamp(),
+          }, { merge: true });
+          await setDoc(doc(secondaryDb, "hospitals", uid), {
+            ...data,
+            createdAt: serverTimestamp(),
+          }, { merge: true });
+
+          // Sign the new user out of the secondary instance — admin's
+          // primary session stays untouched throughout.
+          await signOut(secondaryAuth);
+
+          toast("Hospital created ✓");
+          closeModalFn("m-hospital");
+          return;
+        }
+        closeModalFn("m-hospital");
+      } catch (e) {
+        if (e.message) toast("Failed: " + e.message, true);
+      } finally {
+        $("h-save").disabled = false; $("h-save").textContent = "Save";
+      }
+    };
+
+    // ── SOS ─────────────────────────────────────
+    function renderSos() {
+      const tb = $("sos-tbody");
+      if (!sos.length) {
+        tb.innerHTML = '<tr><td colspan="6" class="empty"><div class="icon">🆘</div><h3>No SOS requests yet</h3></td></tr>';
+        return;
+      }
+      tb.innerHTML = sos.map(s => {
+        const driver = drivers.find(d => d.id === s.driverId);
+        return `<tr>
+          <td><small>${fmtDate(s.createdAt)}</small></td>
+          <td>${escape(s.phone || "—")}</td>
+          <td><a href="${s.mapsLink || `https://maps.google.com/?q=${s.latitude},${s.longitude}`}" target="_blank" style="color:#60a5fa;text-decoration:none">📍 ${(s.latitude||0).toFixed(4)}, ${(s.longitude||0).toFixed(4)}</a></td>
+          <td><span class="pill pill-${s.status === 'resolved' ? 'verified' : s.status === 'assigned' ? 'active' : 'pending'}">${escape(s.status)}</span></td>
+          <td>${escape(driver?.name || (s.driverId ? "—" : "Unassigned"))}</td>
+          <td>${s.status === "pending" ? `<button class="act act-del" onclick="deleteSos('${s.id}')">Cancel</button>` : ""}</td>
+        </tr>`;
+      }).join("");
+    }
+    window.deleteSos = async (id) => {
+      if (!confirm("Cancel this SOS request? This cannot be undone.")) return;
+      try {
+        await deleteDoc(doc(db, "sos_requests", id));
+        toast("SOS cancelled");
+      } catch (e) { toast("Failed: " + e.message, true); }
+    };
+
+    // ── Rescues ─────────────────────────────────
+    function renderRescues() {
+      const tb = $("rescues-tbody");
+      if (!rescues.length) {
+        tb.innerHTML = '<tr><td colspan="5" class="empty"><div class="icon">🚑</div><h3>No rescue requests yet</h3></td></tr>';
+        return;
+      }
+      tb.innerHTML = rescues.map(r => {
+        const driver = drivers.find(d => d.id === r.assignedDriverId);
+        const hospital = hospitals.find(h => h.id === r.assignedHospitalId);
+        return `<tr>
+          <td><small>${fmtDate(r.createdAt)}</small></td>
+          <td>${escape(r.patientName || r.requesterName || "—")}<br><small style="color:var(--muted)">${escape(r.patientPhone || r.requesterPhone || "")}</small></td>
+          <td><span class="pill pill-${r.status === 'completed' ? 'verified' : 'active'}">${escape(r.status||'—')}</span></td>
+          <td>${escape(driver?.name || "—")}</td>
+          <td>${escape(hospital?.name || "—")}</td>
+        </tr>`;
+      }).join("");
+    }
+  </script>
+</body>
+</html>

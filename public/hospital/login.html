@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Hospital Portal Login — 10MinRescue</title>
+  <meta name="description" content="Hospital staff login for 10MinRescue. Receive incoming patient alerts and track ambulance arrival in real time." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563EB'/%3E%3Cpath d='M50 25v50M25 50h50' stroke='white' stroke-width='10' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      background:#0B1D3A;min-height:100vh;
+      display:flex;align-items:center;justify-content:center;
+      padding:24px;color:#fff;
+    }
+    .panel{
+      background:#152644;border:1px solid #1e3a5f;
+      border-radius:24px;padding:44px 36px;width:100%;max-width:420px;
+      box-shadow:0 30px 80px rgba(0,0,0,0.4);
+    }
+    .brand{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:8px}
+    .brand-mark{
+      width:42px;height:42px;border-radius:11px;
+      background:#2563EB;display:flex;align-items:center;justify-content:center;
+      box-shadow:0 6px 16px rgba(37,99,235,0.4);
+    }
+    .brand-mark svg{width:22px;height:22px;color:#fff}
+    .brand-name{font-weight:900;font-size:18px}
+    .brand-name span{color:#FF3B3B}
+    h1{font-size:22px;font-weight:800;text-align:center;margin-bottom:6px;margin-top:18px}
+    .sub{color:#94a3b8;font-size:14px;text-align:center;margin-bottom:28px}
+    label{display:block;font-size:13px;font-weight:600;color:#cbd5e1;margin-bottom:6px;margin-top:14px}
+    input{
+      width:100%;background:#0B1D3A;border:1px solid #1e3a5f;
+      border-radius:11px;padding:13px 14px;color:#fff;font-size:15px;
+      outline:none;transition:border .15s;
+    }
+    input:focus{border-color:#2563EB}
+    button{
+      width:100%;margin-top:24px;background:#2563EB;color:#fff;
+      border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;
+      cursor:pointer;transition:background .15s, transform .1s;
+    }
+    button:hover{background:#1D4ED8}
+    button:disabled{opacity:0.6;cursor:not-allowed}
+    .err{
+      background:rgba(255,59,59,0.1);border:1px solid rgba(255,59,59,0.3);
+      color:#fca5a5;padding:12px;border-radius:10px;font-size:13px;
+      margin-top:14px;display:none;
+    }
+    .err.show{display:block}
+    .info{
+      background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.2);
+      color:#93c5fd;padding:12px 14px;border-radius:10px;font-size:12.5px;
+      margin-top:14px;line-height:1.55;
+    }
+    .back{text-align:center;margin-top:18px;font-size:13px}
+    .back a{color:#94a3b8;text-decoration:none}
+    .back a:hover{color:#fff}
+    .badge{
+      display:inline-flex;align-items:center;gap:6px;
+      background:rgba(37,99,235,0.1);border:1px solid rgba(37,99,235,0.25);
+      color:#93c5fd;padding:5px 12px;border-radius:999px;
+      font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+      margin-bottom:8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <div class="brand">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1m4 0h1M9 13h1m4 0h1M9 17h1m4 0h1"/></svg></span>
+      <span class="brand-name">10Min<span>Rescue</span></span>
+    </div>
+    <div style="text-align:center;margin-top:14px"><span class="badge">Hospital Portal</span></div>
+    <h1>Hospital Login</h1>
+    <p class="sub">Sign in to receive incoming patient alerts</p>
+
+    <form id="form">
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="email" required placeholder="hospital@example.com" />
+      <label for="pw">Password</label>
+      <input id="pw" type="password" autocomplete="current-password" required placeholder="••••••••" />
+      <button type="submit" id="btn">Sign In</button>
+      <div class="err" id="err"></div>
+      <div class="info">
+        Don't have credentials yet? Contact our admin team — hospitals are onboarded by 10MinRescue staff.
+      </div>
+    </form>
+
+    <div class="back"><a href="/">← Back to website</a></div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+    import {
+      getAuth, signInWithEmailAndPassword, onAuthStateChanged,
+      setPersistence, browserSessionPersistence
+    } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc }
+      from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCmDYyhvCc03CXVi8gwQarZJgpbHIx5tKA",
+      authDomain: "min-rescue.firebaseapp.com",
+      projectId: "min-rescue",
+      storageBucket: "min-rescue.firebasestorage.app"
+    };
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db   = getFirestore(app);
+
+    // Per-tab session — prevents the hospital auth from clashing with
+    // the admin portal in another tab via Firebase's cross-tab broadcast.
+    setPersistence(auth, browserSessionPersistence).catch((e) =>
+      console.warn("Could not set session persistence:", e));
+
+    const form = document.getElementById("form");
+    const btn  = document.getElementById("btn");
+    const err  = document.getElementById("err");
+
+    // If already logged in AND a hospital → redirect to dashboard.
+    // If signed in as some other role → sign out so login form is usable.
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) return;
+      try {
+        const h = await getDoc(doc(db, "hospitals", user.uid));
+        if (h.exists()) {
+          location.replace("/hospital/dashboard.html");
+        } else {
+          await auth.signOut();
+        }
+      } catch (e) {
+        await auth.signOut();
+      }
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      err.classList.remove("show");
+      btn.disabled = true; btn.textContent = "Signing in…";
+
+      try {
+        const cred = await signInWithEmailAndPassword(auth,
+          document.getElementById("email").value.trim(),
+          document.getElementById("pw").value);
+        const h = await getDoc(doc(db, "hospitals", cred.user.uid));
+        if (!h.exists()) {
+          await auth.signOut();
+          throw new Error("This account is not registered as a hospital. Contact admin.");
+        }
+        location.replace("/hospital/dashboard.html");
+      } catch (e) {
+        let msg = e.message || "Sign in failed";
+        if (msg.includes("invalid-credential") || msg.includes("wrong-password") || msg.includes("user-not-found"))
+          msg = "Invalid email or password.";
+        err.textContent = msg;
+        err.classList.add("show");
+        btn.disabled = false; btn.textContent = "Sign In";
+      }
+    });
+  </script>
+</body>
+</html>
