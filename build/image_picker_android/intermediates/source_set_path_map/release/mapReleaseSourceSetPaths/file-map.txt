@@ -1,0 +1,29 @@
+io.flutter.plugins.imagepicker.image_picker_android-core-1.0.0-0 C:\Users\rahul\.gradle\caches\8.14\transforms\01802249f84142ec58a912ef5043292b\transformed\core-1.0.0\res
+io.flutter.plugins.imagepicker.image_picker_android-fragment-1.7.1-1 C:\Users\rahul\.gradle\caches\8.14\transforms\025ee31fcef4ff8e37ee99871d6a9f74\transformed\fragment-1.7.1\res
+io.flutter.plugins.imagepicker.image_picker_android-startup-runtime-1.1.1-2 C:\Users\rahul\.gradle\caches\8.14\transforms\07b7cad739457e8fe93dd6fa4b34dc1a\transformed\startup-runtime-1.1.1\res
+io.flutter.plugins.imagepicker.image_picker_android-lifecycle-livedata-2.7.0-3 C:\Users\rahul\.gradle\caches\8.14\transforms\07ddd659e45b70fd22fec74947f8203e\transformed\lifecycle-livedata-2.7.0\res
+io.flutter.plugins.imagepicker.image_picker_android-lifecycle-livedata-core-ktx-2.7.0-4 C:\Users\rahul\.gradle\caches\8.14\transforms\09ea11e75ac399e7a4de51c973578551\transformed\lifecycle-livedata-core-ktx-2.7.0\res
+io.flutter.plugins.imagepicker.image_picker_android-savedstate-1.2.1-5 C:\Users\rahul\.gradle\caches\8.14\transforms\1438785a87995625560e2ecca8f4b2b4\transformed\savedstate-1.2.1\res
+io.flutter.plugins.imagepicker.image_picker_android-window-1.2.0-6 C:\Users\rahul\.gradle\caches\8.14\transforms\2601acb221474fbb02680893c0c5258a\transformed\window-1.2.0\res
+io.flutter.plugins.imagepicker.image_picker_android-profileinstaller-1.3.1-7 C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\res
+io.flutter.plugins.imagepicker.image_picker_android-lifecycle-process-2.7.0-8 C:\Users\rahul\.gradle\caches\8.14\transforms\3b62c245e2f4c1562782199d247ac588\transformed\lifecycle-process-2.7.0\res
+io.flutter.plugins.imagepicker.image_picker_android-window-java-1.2.0-9 C:\Users\rahul\.gradle\caches\8.14\transforms\46607e4b1f98332d7036ca56a0bb301f\transformed\window-java-1.2.0\res
+io.flutter.plugins.imagepicker.image_picker_android-lifecycle-viewmodel-2.7.0-10 C:\Users\rahul\.gradle\caches\8.14\transforms\6d6ec3a60ec22ae06747baba18d9c109\transformed\lifecycle-viewmodel-2.7.0\res
+io.flutter.plugins.imagepicker.image_picker_android-annotation-experimental-1.4.0-11 C:\Users\rahul\.gradle\caches\8.14\transforms\a0eb3fd9547a6e09587e3bb7ec11e811\transformed\annotation-experimental-1.4.0\res
+io.flutter.plugins.imagepicker.image_picker_android-lifecycle-viewmodel-savedstate-2.7.0-12 C:\Users\rahul\.gradle\caches\8.14\transforms\aa3179610fb7bcb55966698f83d61d76\transformed\lifecycle-viewmodel-savedstate-2.7.0\res
+io.flutter.plugins.imagepicker.image_picker_android-activity-1.9.3-13 C:\Users\rahul\.gradle\caches\8.14\transforms\cc2736244816c3d870b1ea822a06b4d1\transformed\activity-1.9.3\res
+io.flutter.plugins.imagepicker.image_picker_android-lifecycle-runtime-2.7.0-14 C:\Users\rahul\.gradle\caches\8.14\transforms\cf6ddb2841295408fc7d9936a2f14ee9\transformed\lifecycle-runtime-2.7.0\res
+io.flutter.plugins.imagepicker.image_picker_android-exifinterface-1.4.1-15 C:\Users\rahul\.gradle\caches\8.14\transforms\d77cdde80d4325d298b8f31a3a980abd\transformed\exifinterface-1.4.1\res
+io.flutter.plugins.imagepicker.image_picker_android-lifecycle-livedata-core-2.7.0-16 C:\Users\rahul\.gradle\caches\8.14\transforms\dc5a9b57f0d7de31d9f571c2d8914e37\transformed\lifecycle-livedata-core-2.7.0\res
+io.flutter.plugins.imagepicker.image_picker_android-tracing-1.2.0-17 C:\Users\rahul\.gradle\caches\8.14\transforms\e17cd0ad4f40f499791995ca3fa5fe52\transformed\tracing-1.2.0\res
+io.flutter.plugins.imagepicker.image_picker_android-core-1.13.1-18 C:\Users\rahul\.gradle\caches\8.14\transforms\e31a86a3c4c1b98ad81c70baf2647eab\transformed\core-1.13.1\res
+io.flutter.plugins.imagepicker.image_picker_android-core-ktx-1.13.1-19 C:\Users\rahul\.gradle\caches\8.14\transforms\e4e97cb0f1437b044375fce12e493068\transformed\core-ktx-1.13.1\res
+io.flutter.plugins.imagepicker.image_picker_android-core-runtime-2.2.0-20 C:\Users\rahul\.gradle\caches\8.14\transforms\ff7b0bf1668e6b6565dfe5466158e6c7\transformed\core-runtime-2.2.0\res
+io.flutter.plugins.imagepicker.image_picker_android-main-21 C:\Users\rahul\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.12+21\android\src\main\res
+io.flutter.plugins.imagepicker.image_picker_android-release-22 C:\Users\rahul\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.12+21\android\src\release\res
+io.flutter.plugins.imagepicker.image_picker_android-release-23 C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\flutter_plugin_android_lifecycle\intermediates\packaged_res\release\packageReleaseResources
+io.flutter.plugins.imagepicker.image_picker_android-pngs-24 C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\generated\res\pngs\release
+io.flutter.plugins.imagepicker.image_picker_android-resValues-25 C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\generated\res\resValues\release
+io.flutter.plugins.imagepicker.image_picker_android-mergeReleaseResources-26 C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\intermediates\incremental\release\mergeReleaseResources\merged.dir
+io.flutter.plugins.imagepicker.image_picker_android-mergeReleaseResources-27 C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\intermediates\incremental\release\mergeReleaseResources\stripped.dir
+io.flutter.plugins.imagepicker.image_picker_android-release-28 C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\intermediates\merged_res\release\mergeReleaseResources

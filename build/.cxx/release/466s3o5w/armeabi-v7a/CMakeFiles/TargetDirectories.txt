@@ -1,0 +1,2 @@
+C:/Users/rahul/OneDrive/Desktop/10 min rescue/10/build/.cxx/release/466s3o5w/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/rahul/OneDrive/Desktop/10 min rescue/10/build/.cxx/release/466s3o5w/armeabi-v7a/CMakeFiles/rebuild_cache.dir

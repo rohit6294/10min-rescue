@@ -1,0 +1,569 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.tenminrescue.ten_min_res"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="24"
+9        android:targetSdkVersion="36" />
+10
+11    <!-- Network -->
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:4:5-66
+12-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:4:22-64
+13
+14    <!-- Camera & Media (for document upload) -->
+15    <uses-permission android:name="android.permission.CAMERA" />
+15-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:7:5-64
+15-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:7:22-62
+16    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+16-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:8:5-75
+16-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:8:22-73
+17    <uses-permission
+17-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:9:5-106
+18        android:name="android.permission.READ_EXTERNAL_STORAGE"
+18-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:9:22-77
+19        android:maxSdkVersion="32" />
+19-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:9:78-104
+20
+21    <!-- Location -->
+22    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+22-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:12:5-78
+22-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:12:22-76
+23    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+23-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:13:5-80
+23-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:13:22-78
+24    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+24-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:14:5-84
+24-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:14:22-82
+25
+26    <!-- Background / Foreground Service -->
+27    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+27-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:17:5-76
+27-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:17:22-74
+28    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+28-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:18:5-85
+28-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:18:22-83
+29
+30    <!-- Wake lock & vibration for emergency alerts -->
+31    <uses-permission android:name="android.permission.WAKE_LOCK" />
+31-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:21:5-67
+31-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:21:22-65
+32    <uses-permission android:name="android.permission.VIBRATE" />
+32-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:22:5-65
+32-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:22:22-63
+33    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+33-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:23:5-80
+33-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:23:22-78
+34
+35    <!-- Notifications (Android 13+) -->
+36    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+36-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:26:5-76
+36-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:26:22-74
+37
+38    <!-- Full-screen intent (emergency call-like popups) -->
+39    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+39-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:29:5-80
+39-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:29:22-78
+40
+41    <queries>
+41-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:72:5-93:15
+42        <intent>
+42-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:73:9-76:18
+43            <action android:name="android.intent.action.PROCESS_TEXT" />
+43-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:74:13-72
+43-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:74:21-70
+44
+45            <data android:mimeType="text/plain" />
+45-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:75:13-50
+45-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:75:19-48
+46        </intent>
+47        <!-- url_launcher: open https links (Google Maps navigation) -->
+48        <intent>
+48-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:78:9-82:18
+49            <action android:name="android.intent.action.VIEW" />
+49-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:79:13-65
+49-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:79:21-62
+50
+51            <category android:name="android.intent.category.BROWSABLE" />
+51-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:80:13-74
+51-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:80:23-71
+52
+53            <data android:scheme="https" />
+53-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:75:13-50
+53-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:81:19-41
+54        </intent>
+55        <!-- url_launcher: open geo: links (Google Maps) -->
+56        <intent>
+56-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:84:9-87:18
+57            <action android:name="android.intent.action.VIEW" />
+57-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:79:13-65
+57-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:79:21-62
+58
+59            <data android:scheme="geo" />
+59-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:75:13-50
+59-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:81:19-41
+60        </intent>
+61        <!-- url_launcher: open tel: links (call patient from SOS active screen) -->
+62        <intent>
+62-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:89:9-92:18
+63            <action android:name="android.intent.action.DIAL" />
+63-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:90:13-65
+63-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:90:21-62
+64
+65            <data android:scheme="tel" />
+65-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:75:13-50
+65-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:81:19-41
+66        </intent>
+67    </queries>
+68
+69    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+69-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:26:5-79
+69-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:26:22-76
+70    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+70-->[com.google.android.recaptcha:recaptcha:18.6.1] C:\Users\rahul\.gradle\caches\8.14\transforms\6459f9e101c8b18357e2b6250825451c\transformed\recaptcha-18.6.1\AndroidManifest.xml:9:5-98
+70-->[com.google.android.recaptcha:recaptcha:18.6.1] C:\Users\rahul\.gradle\caches\8.14\transforms\6459f9e101c8b18357e2b6250825451c\transformed\recaptcha-18.6.1\AndroidManifest.xml:9:22-95
+71
+72    <permission
+72-->[androidx.core:core:1.13.1] C:\Users\rahul\.gradle\caches\8.14\transforms\e31a86a3c4c1b98ad81c70baf2647eab\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
+73        android:name="com.tenminrescue.ten_min_res.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+73-->[androidx.core:core:1.13.1] C:\Users\rahul\.gradle\caches\8.14\transforms\e31a86a3c4c1b98ad81c70baf2647eab\transformed\core-1.13.1\AndroidManifest.xml:23:9-81
+74        android:protectionLevel="signature" />
+74-->[androidx.core:core:1.13.1] C:\Users\rahul\.gradle\caches\8.14\transforms\e31a86a3c4c1b98ad81c70baf2647eab\transformed\core-1.13.1\AndroidManifest.xml:24:9-44
+75
+76    <uses-permission android:name="com.tenminrescue.ten_min_res.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+76-->[androidx.core:core:1.13.1] C:\Users\rahul\.gradle\caches\8.14\transforms\e31a86a3c4c1b98ad81c70baf2647eab\transformed\core-1.13.1\AndroidManifest.xml:26:5-97
+76-->[androidx.core:core:1.13.1] C:\Users\rahul\.gradle\caches\8.14\transforms\e31a86a3c4c1b98ad81c70baf2647eab\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
+77
+78    <application
+79        android:name="android.app.Application"
+79-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:33:9-42
+80        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+80-->[androidx.core:core:1.13.1] C:\Users\rahul\.gradle\caches\8.14\transforms\e31a86a3c4c1b98ad81c70baf2647eab\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
+81        android:extractNativeLibs="false"
+82        android:icon="@mipmap/ic_launcher"
+82-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:34:9-43
+83        android:label="10Min Rescue" >
+83-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:32:9-37
+84        <activity
+84-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:36:9-54:20
+85            android:name="com.tenminrescue.ten_min_rescue.MainActivity"
+85-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:37:13-41
+86            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+86-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:42:13-163
+87            android:exported="true"
+87-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:38:13-36
+88            android:hardwareAccelerated="true"
+88-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:43:13-47
+89            android:launchMode="singleTop"
+89-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:39:13-43
+90            android:showWhenLocked="true"
+90-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:45:13-42
+91            android:taskAffinity=""
+91-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:40:13-36
+92            android:theme="@style/LaunchTheme"
+92-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:41:13-47
+93            android:turnScreenOn="true"
+93-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:46:13-40
+94            android:windowSoftInputMode="adjustResize" >
+94-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:44:13-55
+95            <meta-data
+95-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:47:13-49:54
+96                android:name="io.flutter.embedding.android.NormalTheme"
+96-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:48:15-70
+97                android:resource="@style/NormalTheme" />
+97-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:49:15-52
+98
+99            <intent-filter>
+99-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:50:13-53:29
+100                <action android:name="android.intent.action.MAIN" />
+100-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:51:17-68
+100-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:51:25-66
+101
+102                <category android:name="android.intent.category.LAUNCHER" />
+102-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:52:17-76
+102-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:52:27-74
+103            </intent-filter>
+104        </activity>
+105
+106        <!-- Flutter embedding -->
+107        <meta-data
+107-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:57:9-59:32
+108            android:name="flutterEmbedding"
+108-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:58:13-44
+109            android:value="2" />
+109-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:59:13-30
+110
+111        <!--
+112             FCM: default notification channel for messages whose
+113             channel_id is not explicitly set in the payload.
+114        -->
+115        <meta-data
+115-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:63:9-65:44
+116            android:name="com.google.firebase.messaging.default_notification_channel_id"
+116-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:64:13-89
+117            android:value="sos_emergency" />
+117-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:65:13-42
+118        <!-- FCM: default notification icon (uses the small white app icon). -->
+119        <meta-data
+119-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:67:9-69:53
+120            android:name="com.google.firebase.messaging.default_notification_icon"
+120-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:68:13-83
+121            android:resource="@mipmap/ic_launcher" />
+121-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:69:13-51
+122
+123        <service
+123-->[:geolocator_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\geolocator_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:8:9-12:56
+124            android:name="com.baseflow.geolocator.GeolocatorLocationService"
+124-->[:geolocator_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\geolocator_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:9:13-77
+125            android:enabled="true"
+125-->[:geolocator_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\geolocator_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:10:13-35
+126            android:exported="false"
+126-->[:geolocator_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\geolocator_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:11:13-37
+127            android:foregroundServiceType="location" />
+127-->[:geolocator_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\geolocator_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:12:13-53
+128
+129        <provider
+129-->[:image_picker_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:9:9-17:20
+130            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
+130-->[:image_picker_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:10:13-82
+131            android:authorities="com.tenminrescue.ten_min_res.flutter.image_provider"
+131-->[:image_picker_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:11:13-74
+132            android:exported="false"
+132-->[:image_picker_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:12:13-37
+133            android:grantUriPermissions="true" >
+133-->[:image_picker_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:13:13-47
+134            <meta-data
+134-->[:image_picker_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:14:13-16:75
+135                android:name="android.support.FILE_PROVIDER_PATHS"
+135-->[:image_picker_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:15:17-67
+136                android:resource="@xml/flutter_image_picker_file_paths" />
+136-->[:image_picker_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:16:17-72
+137        </provider> <!-- Trigger Google Play services to install the backported photo picker module. -->
+138        <service
+138-->[:image_picker_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:19:9-31:19
+139            android:name="com.google.android.gms.metadata.ModuleDependencies"
+139-->[:image_picker_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:20:13-78
+140            android:enabled="false"
+140-->[:image_picker_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:21:13-36
+141            android:exported="false" >
+141-->[:image_picker_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:22:13-37
+142            <intent-filter>
+142-->[:image_picker_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:24:13-26:29
+143                <action android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES" />
+143-->[:image_picker_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:25:17-94
+143-->[:image_picker_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:25:25-91
+144            </intent-filter>
+145
+146            <meta-data
+146-->[:image_picker_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:28:13-30:36
+147                android:name="photopicker_activity:0:required"
+147-->[:image_picker_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:29:17-63
+148                android:value="" />
+148-->[:image_picker_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\image_picker_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:30:17-33
+149        </service>
+150
+151        <activity
+151-->[:url_launcher_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\url_launcher_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:8:9-11:74
+152            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+152-->[:url_launcher_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\url_launcher_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:9:13-74
+153            android:exported="false"
+153-->[:url_launcher_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\url_launcher_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:10:13-37
+154            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+154-->[:url_launcher_android] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\url_launcher_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:11:13-71
+155
+156        <service
+156-->[:cloud_firestore] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\cloud_firestore\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:8:9-12:19
+157            android:name="com.google.firebase.components.ComponentDiscoveryService"
+157-->[:cloud_firestore] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\cloud_firestore\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:8:18-89
+158            android:directBootAware="true"
+158-->[com.google.firebase:firebase-common:21.0.0] C:\Users\rahul\.gradle\caches\8.14\transforms\b72efa6b9135b862f3b893848215ac6b\transformed\firebase-common-21.0.0\AndroidManifest.xml:32:13-43
+159            android:exported="false" >
+159-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:68:13-37
+160            <meta-data
+160-->[:cloud_firestore] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\cloud_firestore\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:9:13-11:85
+161                android:name="com.google.firebase.components:io.flutter.plugins.firebase.firestore.FlutterFirebaseFirestoreRegistrar"
+161-->[:cloud_firestore] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\cloud_firestore\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:10:17-134
+162                android:value="com.google.firebase.components.ComponentRegistrar" />
+162-->[:cloud_firestore] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\cloud_firestore\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:11:17-82
+163            <meta-data
+163-->[:firebase_auth] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\firebase_auth\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:9:13-11:85
+164                android:name="com.google.firebase.components:io.flutter.plugins.firebase.auth.FlutterFirebaseAuthRegistrar"
+164-->[:firebase_auth] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\firebase_auth\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:10:17-124
+165                android:value="com.google.firebase.components.ComponentRegistrar" />
+165-->[:firebase_auth] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\firebase_auth\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:11:17-82
+166            <meta-data
+166-->[:firebase_core] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\firebase_core\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:9:13-11:85
+167                android:name="com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseCoreRegistrar"
+167-->[:firebase_core] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\firebase_core\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:10:17-124
+168                android:value="com.google.firebase.components.ComponentRegistrar" />
+168-->[:firebase_core] C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\build\firebase_core\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:11:17-82
+169            <meta-data
+169-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:69:13-71:85
+170                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
+170-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:70:17-109
+171                android:value="com.google.firebase.components.ComponentRegistrar" />
+171-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:71:17-82
+172            <meta-data
+172-->[com.google.firebase:firebase-firestore:25.1.4] C:\Users\rahul\.gradle\caches\8.14\transforms\2285cd9a08ec579747a6d10e1ccc904a\transformed\firebase-firestore-25.1.4\AndroidManifest.xml:17:13-19:85
+173                android:name="com.google.firebase.components:com.google.firebase.firestore.FirebaseFirestoreKtxRegistrar"
+173-->[com.google.firebase:firebase-firestore:25.1.4] C:\Users\rahul\.gradle\caches\8.14\transforms\2285cd9a08ec579747a6d10e1ccc904a\transformed\firebase-firestore-25.1.4\AndroidManifest.xml:18:17-122
+174                android:value="com.google.firebase.components.ComponentRegistrar" />
+174-->[com.google.firebase:firebase-firestore:25.1.4] C:\Users\rahul\.gradle\caches\8.14\transforms\2285cd9a08ec579747a6d10e1ccc904a\transformed\firebase-firestore-25.1.4\AndroidManifest.xml:19:17-82
+175            <meta-data
+175-->[com.google.firebase:firebase-firestore:25.1.4] C:\Users\rahul\.gradle\caches\8.14\transforms\2285cd9a08ec579747a6d10e1ccc904a\transformed\firebase-firestore-25.1.4\AndroidManifest.xml:20:13-22:85
+176                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
+176-->[com.google.firebase:firebase-firestore:25.1.4] C:\Users\rahul\.gradle\caches\8.14\transforms\2285cd9a08ec579747a6d10e1ccc904a\transformed\firebase-firestore-25.1.4\AndroidManifest.xml:21:17-111
+177                android:value="com.google.firebase.components.ComponentRegistrar" />
+177-->[com.google.firebase:firebase-firestore:25.1.4] C:\Users\rahul\.gradle\caches\8.14\transforms\2285cd9a08ec579747a6d10e1ccc904a\transformed\firebase-firestore-25.1.4\AndroidManifest.xml:22:17-82
+178            <meta-data
+178-->[com.google.firebase:firebase-common-ktx:21.0.0] C:\Users\rahul\.gradle\caches\8.14\transforms\331d6839c0bfe0be0b35a192c5280236\transformed\firebase-common-ktx-21.0.0\AndroidManifest.xml:12:13-14:85
+179                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"
+179-->[com.google.firebase:firebase-common-ktx:21.0.0] C:\Users\rahul\.gradle\caches\8.14\transforms\331d6839c0bfe0be0b35a192c5280236\transformed\firebase-common-ktx-21.0.0\AndroidManifest.xml:13:17-116
+180                android:value="com.google.firebase.components.ComponentRegistrar" />
+180-->[com.google.firebase:firebase-common-ktx:21.0.0] C:\Users\rahul\.gradle\caches\8.14\transforms\331d6839c0bfe0be0b35a192c5280236\transformed\firebase-common-ktx-21.0.0\AndroidManifest.xml:14:17-82
+181            <meta-data
+181-->[com.google.firebase:firebase-common:21.0.0] C:\Users\rahul\.gradle\caches\8.14\transforms\b72efa6b9135b862f3b893848215ac6b\transformed\firebase-common-21.0.0\AndroidManifest.xml:35:13-37:85
+182                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
+182-->[com.google.firebase:firebase-common:21.0.0] C:\Users\rahul\.gradle\caches\8.14\transforms\b72efa6b9135b862f3b893848215ac6b\transformed\firebase-common-21.0.0\AndroidManifest.xml:36:17-109
+183                android:value="com.google.firebase.components.ComponentRegistrar" />
+183-->[com.google.firebase:firebase-common:21.0.0] C:\Users\rahul\.gradle\caches\8.14\transforms\b72efa6b9135b862f3b893848215ac6b\transformed\firebase-common-21.0.0\AndroidManifest.xml:37:17-82
+184        </service>
+185
+186        <activity
+186-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:29:9-46:20
+187            android:name="com.google.firebase.auth.internal.GenericIdpActivity"
+187-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:30:13-80
+188            android:excludeFromRecents="true"
+188-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:31:13-46
+189            android:exported="true"
+189-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:32:13-36
+190            android:launchMode="singleTask"
+190-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:33:13-44
+191            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+191-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:34:13-72
+192            <intent-filter>
+192-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:35:13-45:29
+193                <action android:name="android.intent.action.VIEW" />
+193-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:79:13-65
+193-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:79:21-62
+194
+195                <category android:name="android.intent.category.DEFAULT" />
+195-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:38:17-76
+195-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:38:27-73
+196                <category android:name="android.intent.category.BROWSABLE" />
+196-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:80:13-74
+196-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:80:23-71
+197
+198                <data
+198-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:75:13-50
+199                    android:host="firebase.auth"
+200                    android:path="/"
+201                    android:scheme="genericidp" />
+201-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:81:19-41
+202            </intent-filter>
+203        </activity>
+204        <activity
+204-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:47:9-64:20
+205            android:name="com.google.firebase.auth.internal.RecaptchaActivity"
+205-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:48:13-79
+206            android:excludeFromRecents="true"
+206-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:49:13-46
+207            android:exported="true"
+207-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:50:13-36
+208            android:launchMode="singleTask"
+208-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:51:13-44
+209            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+209-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:52:13-72
+210            <intent-filter>
+210-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:53:13-63:29
+211                <action android:name="android.intent.action.VIEW" />
+211-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:79:13-65
+211-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:79:21-62
+212
+213                <category android:name="android.intent.category.DEFAULT" />
+213-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:38:17-76
+213-->[com.google.firebase:firebase-auth:23.2.1] C:\Users\rahul\.gradle\caches\8.14\transforms\4b78554c8612e0f9f49262e5dc2d8d61\transformed\firebase-auth-23.2.1\AndroidManifest.xml:38:27-73
+214                <category android:name="android.intent.category.BROWSABLE" />
+214-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:80:13-74
+214-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:80:23-71
+215
+216                <data
+216-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:75:13-50
+217                    android:host="firebase.auth"
+218                    android:path="/"
+219                    android:scheme="recaptcha" />
+219-->C:\Users\rahul\OneDrive\Desktop\10 min rescue\10\android\app\src\main\AndroidManifest.xml:81:19-41
+220            </intent-filter>
+221        </activity>
+222
+223        <service
+223-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\rahul\.gradle\caches\8.14\transforms\9fa8b1cee0e123503dcd179890677a86\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:24:9-32:19
+224            android:name="androidx.credentials.playservices.CredentialProviderMetadataHolder"
+224-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\rahul\.gradle\caches\8.14\transforms\9fa8b1cee0e123503dcd179890677a86\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:25:13-94
+225            android:enabled="true"
+225-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\rahul\.gradle\caches\8.14\transforms\9fa8b1cee0e123503dcd179890677a86\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:26:13-35
+226            android:exported="false" >
+226-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\rahul\.gradle\caches\8.14\transforms\9fa8b1cee0e123503dcd179890677a86\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:27:13-37
+227            <meta-data
+227-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\rahul\.gradle\caches\8.14\transforms\9fa8b1cee0e123503dcd179890677a86\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:29:13-31:104
+228                android:name="androidx.credentials.CREDENTIAL_PROVIDER_KEY"
+228-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\rahul\.gradle\caches\8.14\transforms\9fa8b1cee0e123503dcd179890677a86\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:30:17-76
+229                android:value="androidx.credentials.playservices.CredentialProviderPlayServicesImpl" />
+229-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\rahul\.gradle\caches\8.14\transforms\9fa8b1cee0e123503dcd179890677a86\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:31:17-101
+230        </service>
+231
+232        <activity
+232-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\rahul\.gradle\caches\8.14\transforms\9fa8b1cee0e123503dcd179890677a86\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:34:9-41:20
+233            android:name="androidx.credentials.playservices.HiddenActivity"
+233-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\rahul\.gradle\caches\8.14\transforms\9fa8b1cee0e123503dcd179890677a86\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:35:13-76
+234            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+234-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\rahul\.gradle\caches\8.14\transforms\9fa8b1cee0e123503dcd179890677a86\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:36:13-87
+235            android:enabled="true"
+235-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\rahul\.gradle\caches\8.14\transforms\9fa8b1cee0e123503dcd179890677a86\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:37:13-35
+236            android:exported="false"
+236-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\rahul\.gradle\caches\8.14\transforms\9fa8b1cee0e123503dcd179890677a86\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:38:13-37
+237            android:fitsSystemWindows="true"
+237-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\rahul\.gradle\caches\8.14\transforms\9fa8b1cee0e123503dcd179890677a86\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:39:13-45
+238            android:theme="@style/Theme.Hidden" >
+238-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\rahul\.gradle\caches\8.14\transforms\9fa8b1cee0e123503dcd179890677a86\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:40:13-48
+239        </activity>
+240        <activity
+240-->[com.google.android.gms:play-services-auth:20.7.0] C:\Users\rahul\.gradle\caches\8.14\transforms\a8df5b8624b98673cc1ec8d6b89cfc0e\transformed\play-services-auth-20.7.0\AndroidManifest.xml:23:9-27:75
+241            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+241-->[com.google.android.gms:play-services-auth:20.7.0] C:\Users\rahul\.gradle\caches\8.14\transforms\a8df5b8624b98673cc1ec8d6b89cfc0e\transformed\play-services-auth-20.7.0\AndroidManifest.xml:24:13-93
+242            android:excludeFromRecents="true"
+242-->[com.google.android.gms:play-services-auth:20.7.0] C:\Users\rahul\.gradle\caches\8.14\transforms\a8df5b8624b98673cc1ec8d6b89cfc0e\transformed\play-services-auth-20.7.0\AndroidManifest.xml:25:13-46
+243            android:exported="false"
+243-->[com.google.android.gms:play-services-auth:20.7.0] C:\Users\rahul\.gradle\caches\8.14\transforms\a8df5b8624b98673cc1ec8d6b89cfc0e\transformed\play-services-auth-20.7.0\AndroidManifest.xml:26:13-37
+244            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+244-->[com.google.android.gms:play-services-auth:20.7.0] C:\Users\rahul\.gradle\caches\8.14\transforms\a8df5b8624b98673cc1ec8d6b89cfc0e\transformed\play-services-auth-20.7.0\AndroidManifest.xml:27:13-72
+245        <!--
+246            Service handling Google Sign-In user revocation. For apps that do not integrate with
+247            Google Sign-In, this service will never be started.
+248        -->
+249        <service
+249-->[com.google.android.gms:play-services-auth:20.7.0] C:\Users\rahul\.gradle\caches\8.14\transforms\a8df5b8624b98673cc1ec8d6b89cfc0e\transformed\play-services-auth-20.7.0\AndroidManifest.xml:33:9-37:51
+250            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
+250-->[com.google.android.gms:play-services-auth:20.7.0] C:\Users\rahul\.gradle\caches\8.14\transforms\a8df5b8624b98673cc1ec8d6b89cfc0e\transformed\play-services-auth-20.7.0\AndroidManifest.xml:34:13-89
+251            android:exported="true"
+251-->[com.google.android.gms:play-services-auth:20.7.0] C:\Users\rahul\.gradle\caches\8.14\transforms\a8df5b8624b98673cc1ec8d6b89cfc0e\transformed\play-services-auth-20.7.0\AndroidManifest.xml:35:13-36
+252            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
+252-->[com.google.android.gms:play-services-auth:20.7.0] C:\Users\rahul\.gradle\caches\8.14\transforms\a8df5b8624b98673cc1ec8d6b89cfc0e\transformed\play-services-auth-20.7.0\AndroidManifest.xml:36:13-107
+253            android:visibleToInstantApps="true" />
+253-->[com.google.android.gms:play-services-auth:20.7.0] C:\Users\rahul\.gradle\caches\8.14\transforms\a8df5b8624b98673cc1ec8d6b89cfc0e\transformed\play-services-auth-20.7.0\AndroidManifest.xml:37:13-48
+254
+255        <activity
+255-->[com.google.android.gms:play-services-base:18.3.0] C:\Users\rahul\.gradle\caches\8.14\transforms\8dd7a91e2e91cbd185ef4a45d10c6e7c\transformed\play-services-base-18.3.0\AndroidManifest.xml:20:9-22:45
+256            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+256-->[com.google.android.gms:play-services-base:18.3.0] C:\Users\rahul\.gradle\caches\8.14\transforms\8dd7a91e2e91cbd185ef4a45d10c6e7c\transformed\play-services-base-18.3.0\AndroidManifest.xml:20:19-85
+257            android:exported="false"
+257-->[com.google.android.gms:play-services-base:18.3.0] C:\Users\rahul\.gradle\caches\8.14\transforms\8dd7a91e2e91cbd185ef4a45d10c6e7c\transformed\play-services-base-18.3.0\AndroidManifest.xml:22:19-43
+258            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+258-->[com.google.android.gms:play-services-base:18.3.0] C:\Users\rahul\.gradle\caches\8.14\transforms\8dd7a91e2e91cbd185ef4a45d10c6e7c\transformed\play-services-base-18.3.0\AndroidManifest.xml:21:19-78
+259
+260        <provider
+260-->[com.google.firebase:firebase-common:21.0.0] C:\Users\rahul\.gradle\caches\8.14\transforms\b72efa6b9135b862f3b893848215ac6b\transformed\firebase-common-21.0.0\AndroidManifest.xml:23:9-28:39
+261            android:name="com.google.firebase.provider.FirebaseInitProvider"
+261-->[com.google.firebase:firebase-common:21.0.0] C:\Users\rahul\.gradle\caches\8.14\transforms\b72efa6b9135b862f3b893848215ac6b\transformed\firebase-common-21.0.0\AndroidManifest.xml:24:13-77
+262            android:authorities="com.tenminrescue.ten_min_res.firebaseinitprovider"
+262-->[com.google.firebase:firebase-common:21.0.0] C:\Users\rahul\.gradle\caches\8.14\transforms\b72efa6b9135b862f3b893848215ac6b\transformed\firebase-common-21.0.0\AndroidManifest.xml:25:13-72
+263            android:directBootAware="true"
+263-->[com.google.firebase:firebase-common:21.0.0] C:\Users\rahul\.gradle\caches\8.14\transforms\b72efa6b9135b862f3b893848215ac6b\transformed\firebase-common-21.0.0\AndroidManifest.xml:26:13-43
+264            android:exported="false"
+264-->[com.google.firebase:firebase-common:21.0.0] C:\Users\rahul\.gradle\caches\8.14\transforms\b72efa6b9135b862f3b893848215ac6b\transformed\firebase-common-21.0.0\AndroidManifest.xml:27:13-37
+265            android:initOrder="100" />
+265-->[com.google.firebase:firebase-common:21.0.0] C:\Users\rahul\.gradle\caches\8.14\transforms\b72efa6b9135b862f3b893848215ac6b\transformed\firebase-common-21.0.0\AndroidManifest.xml:28:13-36
+266        <provider
+266-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\rahul\.gradle\caches\8.14\transforms\3b62c245e2f4c1562782199d247ac588\transformed\lifecycle-process-2.7.0\AndroidManifest.xml:24:9-32:20
+267            android:name="androidx.startup.InitializationProvider"
+267-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\rahul\.gradle\caches\8.14\transforms\3b62c245e2f4c1562782199d247ac588\transformed\lifecycle-process-2.7.0\AndroidManifest.xml:25:13-67
+268            android:authorities="com.tenminrescue.ten_min_res.androidx-startup"
+268-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\rahul\.gradle\caches\8.14\transforms\3b62c245e2f4c1562782199d247ac588\transformed\lifecycle-process-2.7.0\AndroidManifest.xml:26:13-68
+269            android:exported="false" >
+269-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\rahul\.gradle\caches\8.14\transforms\3b62c245e2f4c1562782199d247ac588\transformed\lifecycle-process-2.7.0\AndroidManifest.xml:27:13-37
+270            <meta-data
+270-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\rahul\.gradle\caches\8.14\transforms\3b62c245e2f4c1562782199d247ac588\transformed\lifecycle-process-2.7.0\AndroidManifest.xml:29:13-31:52
+271                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+271-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\rahul\.gradle\caches\8.14\transforms\3b62c245e2f4c1562782199d247ac588\transformed\lifecycle-process-2.7.0\AndroidManifest.xml:30:17-78
+272                android:value="androidx.startup" />
+272-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\rahul\.gradle\caches\8.14\transforms\3b62c245e2f4c1562782199d247ac588\transformed\lifecycle-process-2.7.0\AndroidManifest.xml:31:17-49
+273            <meta-data
+273-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+274                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+274-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+275                android:value="androidx.startup" />
+275-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+276        </provider>
+277
+278        <uses-library
+278-->[androidx.window:window:1.2.0] C:\Users\rahul\.gradle\caches\8.14\transforms\2601acb221474fbb02680893c0c5258a\transformed\window-1.2.0\AndroidManifest.xml:23:9-25:40
+279            android:name="androidx.window.extensions"
+279-->[androidx.window:window:1.2.0] C:\Users\rahul\.gradle\caches\8.14\transforms\2601acb221474fbb02680893c0c5258a\transformed\window-1.2.0\AndroidManifest.xml:24:13-54
+280            android:required="false" />
+280-->[androidx.window:window:1.2.0] C:\Users\rahul\.gradle\caches\8.14\transforms\2601acb221474fbb02680893c0c5258a\transformed\window-1.2.0\AndroidManifest.xml:25:13-37
+281        <uses-library
+281-->[androidx.window:window:1.2.0] C:\Users\rahul\.gradle\caches\8.14\transforms\2601acb221474fbb02680893c0c5258a\transformed\window-1.2.0\AndroidManifest.xml:26:9-28:40
+282            android:name="androidx.window.sidecar"
+282-->[androidx.window:window:1.2.0] C:\Users\rahul\.gradle\caches\8.14\transforms\2601acb221474fbb02680893c0c5258a\transformed\window-1.2.0\AndroidManifest.xml:27:13-51
+283            android:required="false" />
+283-->[androidx.window:window:1.2.0] C:\Users\rahul\.gradle\caches\8.14\transforms\2601acb221474fbb02680893c0c5258a\transformed\window-1.2.0\AndroidManifest.xml:28:13-37
+284
+285        <meta-data
+285-->[com.google.android.gms:play-services-basement:18.4.0] C:\Users\rahul\.gradle\caches\8.14\transforms\531378da5622b87f6355f4d342c23472\transformed\play-services-basement-18.4.0\AndroidManifest.xml:6:9-122
+286            android:name="com.google.android.gms.version"
+286-->[com.google.android.gms:play-services-basement:18.4.0] C:\Users\rahul\.gradle\caches\8.14\transforms\531378da5622b87f6355f4d342c23472\transformed\play-services-basement-18.4.0\AndroidManifest.xml:6:20-65
+287            android:value="@integer/google_play_services_version" />
+287-->[com.google.android.gms:play-services-basement:18.4.0] C:\Users\rahul\.gradle\caches\8.14\transforms\531378da5622b87f6355f4d342c23472\transformed\play-services-basement-18.4.0\AndroidManifest.xml:6:66-119
+288
+289        <receiver
+289-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+290            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+290-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+291            android:directBootAware="false"
+291-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+292            android:enabled="true"
+292-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+293            android:exported="true"
+293-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+294            android:permission="android.permission.DUMP" >
+294-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+295            <intent-filter>
+295-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+296                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+296-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+296-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+297            </intent-filter>
+298            <intent-filter>
+298-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+299                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+299-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+299-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+300            </intent-filter>
+301            <intent-filter>
+301-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+302                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+302-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+302-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+303            </intent-filter>
+304            <intent-filter>
+304-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+305                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+305-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+305-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\rahul\.gradle\caches\8.14\transforms\31c32d39ce07eb665ea1e2d5a9c47616\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+306            </intent-filter>
+307        </receiver> <!-- The activities will be merged into the manifest of the hosting app. -->
+308        <activity
+308-->[com.google.android.play:core-common:2.0.3] C:\Users\rahul\.gradle\caches\8.14\transforms\c913b56b81ed515945e9511c702279a6\transformed\core-common-2.0.3\AndroidManifest.xml:14:9-18:65
+309            android:name="com.google.android.play.core.common.PlayCoreDialogWrapperActivity"
+309-->[com.google.android.play:core-common:2.0.3] C:\Users\rahul\.gradle\caches\8.14\transforms\c913b56b81ed515945e9511c702279a6\transformed\core-common-2.0.3\AndroidManifest.xml:15:13-93
+310            android:exported="false"
+310-->[com.google.android.play:core-common:2.0.3] C:\Users\rahul\.gradle\caches\8.14\transforms\c913b56b81ed515945e9511c702279a6\transformed\core-common-2.0.3\AndroidManifest.xml:16:13-37
+311            android:stateNotNeeded="true"
+311-->[com.google.android.play:core-common:2.0.3] C:\Users\rahul\.gradle\caches\8.14\transforms\c913b56b81ed515945e9511c702279a6\transformed\core-common-2.0.3\AndroidManifest.xml:17:13-42
+312            android:theme="@style/Theme.PlayCore.Transparent" />
+312-->[com.google.android.play:core-common:2.0.3] C:\Users\rahul\.gradle\caches\8.14\transforms\c913b56b81ed515945e9511c702279a6\transformed\core-common-2.0.3\AndroidManifest.xml:18:13-62
+313    </application>
+314
+315</manifest>
